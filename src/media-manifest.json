@@ -1,0 +1,108 @@
+{
+  "p-senja": {
+    "ratio": 0.8056,
+    "widths": [
+      420,
+      840
+    ]
+  },
+  "p-jambu": {
+    "ratio": 0.8056,
+    "widths": [
+      420,
+      840
+    ]
+  },
+  "p-kelapa": {
+    "ratio": 0.8056,
+    "widths": [
+      420,
+      840
+    ]
+  },
+  "p-aren": {
+    "ratio": 0.8056,
+    "widths": [
+      420,
+      840
+    ]
+  },
+  "p-telang": {
+    "ratio": 0.8056,
+    "widths": [
+      420,
+      840
+    ]
+  },
+  "place-exterior": {
+    "ratio": 1.4906,
+    "widths": [
+      640,
+      1280
+    ]
+  },
+  "place-interior": {
+    "ratio": 1.4906,
+    "widths": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "place-bar": {
+    "ratio": 1.4906,
+    "widths": [
+      640,
+      1280
+    ]
+  },
+  "place-corner": {
+    "ratio": 0.8056,
+    "widths": [
+      480,
+      960
+    ]
+  },
+  "place-night": {
+    "ratio": 0.8056,
+    "widths": [
+      480,
+      960
+    ]
+  },
+  "m-pour": {
+    "ratio": 0.8056,
+    "widths": [
+      480,
+      960
+    ]
+  },
+  "m-toast": {
+    "ratio": 0.8056,
+    "widths": [
+      480,
+      960
+    ]
+  },
+  "m-friends": {
+    "ratio": 1.4906,
+    "widths": [
+      640,
+      1280
+    ]
+  },
+  "m-pastry": {
+    "ratio": 1,
+    "widths": [
+      480,
+      960
+    ]
+  },
+  "m-after": {
+    "ratio": 1,
+    "widths": [
+      480,
+      960
+    ]
+  }
+}

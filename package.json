@@ -1,0 +1,33 @@
+{
+  "name": "riuh",
+  "version": "1.0.0",
+  "description": "RIUH Coffee Cocktail Club - brand site",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "logo": "node scripts/build-logo.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandmanz26/foodies.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sandmanz26/foodies/issues"
+  },
+  "homepage": "https://github.com/sandmanz26/foodies#readme",
+  "devDependencies": {
+    "opentype.js": "^2.0.0",
+    "sharp": "^0.35.5",
+    "vite": "^6.4.6"
+  },
+  "dependencies": {
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource/bagel-fat-one": "^5.3.0",
+    "@fontsource/gochi-hand": "^5.3.0",
+    "gsap": "^3.15.1",
+    "three": "^0.187.0"
+  },
+  "type": "module",
+  "private": true
+}
