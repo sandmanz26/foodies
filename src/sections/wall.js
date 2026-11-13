@@ -1,50 +1,32 @@
-// Dinding Riuh: a scrapbook of the place. Photos can be nudged around; the visitor's own
-// drink from the Racik section gets taped up among them.
+// The loud wall: a scrapbook of the place. Photos can be nudged around.
 import { WALL } from '../content.js';
 import { qs, qsa, photoTag } from '../lib/dom.js';
-import { onState } from '../lib/state.js';
 
 const ALT = {
-  'place-interior': 'Interior RIUH di pagi hari: lantai kotak merah-krem, meja bundar kuning, kursi warna-warni, dan mural bunga di dinding.',
-  'm-pour': 'Tangan barista menuang espresso ke gelas tonic berisi es; kopi turun berpilin.',
-  'm-toast': 'Empat tangan bersulang dengan empat coffee cocktail berbeda di atas meja kuning, confetti beterbangan.',
-  'place-bar': 'Bar berlapis ubin biru dengan mesin espresso kuning dan lampu neon RIUH; barista sedang mengocok shaker.',
-  'm-friends': 'Empat sahabat tertawa di meja kuning di depan mural bunga.',
-  'm-pastry': 'Etalase pastry: croissant, pain au chocolat, dan donat berglasir warna-warni.',
-  'place-corner': 'Pojok dengan sofa pink melengkung, meja kuning, dan jendela besar.',
-  'm-after': 'Meja kuning setelah ditinggal: gelas kosong, remah croissant, confetti, dan serbet bergambar senyum.',
-  'place-night': 'Tampak depan RIUH di malam hari, lampu hangat dan meja-meja terisi.',
-  'place-exterior': 'Tampak depan RIUH di sore hari dengan awning merah dan papan nama kuning.',
+  'place-interior': 'The room before opening: checkered red and cream floor, round yellow tables, coloured bentwood chairs and a hand-painted flower mural.',
+  'm-pour': "A barista's hand pouring espresso into a glass of iced tonic; the coffee curls down through it.",
+  'm-toast': 'Four hands toasting with four different coffee cocktails over a yellow table, confetti in the air.',
+  'place-bar': 'The blue-tiled bar with a yellow espresso machine and a neon RIUH sign; a barista shaking a drink.',
+  'm-friends': 'Four friends laughing at a yellow table in front of the flower mural.',
+  'm-pastry': 'The pastry case: croissants, pains au chocolat and glazed doughnuts.',
+  'place-corner': 'A corner with a curved pink banquette, a yellow table and a tall window.',
+  'm-after': 'A yellow table after a group has left: empty glasses, crumbs, confetti and a napkin with a smiley drawn on it.',
+  'place-night': 'The front of RIUH at night, warm light and full tables.',
+  'place-exterior': 'The front of RIUH in the afternoon, with its red awning and yellow sign.',
 };
-
-function swatch(colors) {
-  return `<svg class="snap__swatch" viewBox="0 0 62 78" aria-hidden="true"><defs><linearGradient id="sw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${colors[0]}"/><stop offset=".25" stop-color="${colors[1]}"/><stop offset="1" stop-color="${colors[2]}"/></linearGradient><clipPath id="swc"><path d="M8 6 13 66Q14 72 20 72H42Q48 72 49 66L54 6Z"/></clipPath></defs><rect x="0" y="18" width="62" height="60" fill="url(#sw)" clip-path="url(#swc)"/><path d="M8 6 13 66Q14 72 20 72H42Q48 72 49 66L54 6" fill="none" stroke="#2A1610" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-}
 
 export function initWall() {
   const board = qs('[data-wall]');
-  const cards = WALL.map(
+  board.innerHTML = WALL.map(
     (w, i) => `<figure class="snap polaroid" data-rise style="--r:${w.rot}deg;--tr:${-w.rot * 1.4}deg;--tape:var(--${w.tape});--d:${(i % 4) * 0.06}s">
       ${photoTag(w.src, ALT[w.src] || '', '(max-width: 600px) 46vw, (max-width: 1100px) 31vw, 320px')}
       <figcaption>${w.cap}</figcaption></figure>`,
-  );
-  cards.splice(2, 0, `<div class="snap snap--yours polaroid" data-rise data-yours style="--r:2.5deg;--tr:4deg;--tape:var(--tomat)"></div>`);
-  board.innerHTML = cards.join('');
-
-  const yours = qs('[data-yours]', board);
-  onState(({ racik }) => {
-    yours.innerHTML = racik
-      ? `${swatch(racik.colors)}<p class="snap__label">Racikanmu</p><p class="snap__name">${racik.name}</p><p class="snap__meta">${racik.recipe}</p>`
-      : `<p class="snap__label">Tempat ini kosong</p><p class="snap__name">Buat racikanmu</p><p class="snap__meta">Racik dulu, nanti kami tempel di sini.</p><a class="btn" href="#racik">Racik sekarang</a>`;
-  });
+  ).join('');
 
   // drag to rearrange: horizontal intent only on touch, so the page still scrolls
   qsa('.snap', board).forEach((el) => {
     let start = null, ox = 0, oy = 0;
-    el.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('a,button')) return;
-      start = { x: e.clientX, y: e.clientY, ox, oy, moved: false };
-    });
+    el.addEventListener('pointerdown', (e) => { start = { x: e.clientX, y: e.clientY, ox, oy, moved: false }; });
     el.addEventListener('pointermove', (e) => {
       if (!start) return;
       const dx = e.clientX - start.x, dy = e.clientY - start.y;

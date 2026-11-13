@@ -14,6 +14,8 @@ const BEATS = [
   [0.55, 0.84],
 ];
 const BRAND_AT = 0.88;
+const GLOOM_FROM = 0.06;
+const GLOOM_TO = 0.3;
 
 export function initHero() {
   const hero = qs('#hero');
@@ -54,7 +56,9 @@ export function initHero() {
       const i = order[cursor++];
       const img = new Image();
       img.decoding = 'async';
-      img.onload = () => {
+      img.onload = async () => {
+        // decode now, off the main thread, so the first draw of a frame costs nothing
+        try { await img.decode(); } catch { /* still drawable */ }
         if (mySet !== set) return;
         frames[i] = img;
         if (i === 0) { hero.classList.add('is-live'); resize(); }
@@ -77,16 +81,32 @@ export function initHero() {
     return -1;
   }
 
-  function draw() {
-    if (!frames) return;
-    const i = nearest(Math.round(current));
-    if (i < 0 || i === shown) return;
-    const img = frames[i];
+  function paint(img, alpha) {
     const cw = canvas.width, ch = canvas.height;
     const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
     const w = img.naturalWidth * s, h = img.naturalHeight * s;
+    ctx.globalAlpha = alpha;
     ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
-    shown = i;
+  }
+
+  // Scroll positions rarely land exactly on a frame, so the two neighbours are cross-faded.
+  // With a locked-off camera this reads as real in-between motion instead of stepping.
+  function draw() {
+    if (!frames) return;
+    const key = Math.round(current * 16) / 16;
+    if (key === shown) return;
+    const lo = Math.floor(key), frac = key - lo;
+    const a = frames[lo], b = frames[lo + 1];
+    if (a && b && frac > 0.03) {
+      paint(a, 1);
+      paint(b, frac);
+    } else {
+      const i = nearest(Math.round(key));
+      if (i < 0) return;
+      paint(frames[i], 1);
+    }
+    ctx.globalAlpha = 1;
+    shown = key;
   }
 
   function resize() {
@@ -106,6 +126,8 @@ export function initHero() {
     beats.forEach((b, i) => b.classList.toggle('is-on', p > BEATS[i][0] && p <= BEATS[i][1]));
     brand.classList.toggle('is-on', p >= BRAND_AT);
     meter.style.setProperty('--p', p.toFixed(3));
+    // the room starts grey and dim; colour comes back as the table fills
+    stage.style.setProperty('--gloom', (1 - smooth(clamp((p - GLOOM_FROM) / (GLOOM_TO - GLOOM_FROM)))).toFixed(3));
     // the full-bleed scene shrinks into a snapshot as the brand name lands
     const shrink = mq.matches ? 0 : smooth(clamp((p - 0.85) / 0.12));
     stage.style.setProperty('--shrink', shrink.toFixed(3));
@@ -117,8 +139,8 @@ export function initHero() {
   }
   function tick() {
     raf = 0;
-    current += (target - current) * 0.22;
-    if (Math.abs(target - current) < 0.05) current = target;
+    current += (target - current) * 0.16;
+    if (Math.abs(target - current) < 0.02) current = target;
     draw();
     if (current !== target) schedule();
   }

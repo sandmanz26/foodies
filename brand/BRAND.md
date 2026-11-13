@@ -1,17 +1,20 @@
-# RIUH — Coffee Cocktail Club
+# RIUH — Zero-proof coffee cocktail bar, Jakarta
 
-**Tagline:** Meja kosong, jadi riuh.
-**Janji singkat:** 0% alkohol, 100% riuh.
+**Tagline:** Empty tables don't stay empty.
+**Kalimat inti:** The night out, without the morning after.
+**Arti nama:** RIUH /ree-ooh/, Indonesian for the good kind of loud.
+
+Posisi, audiens, dan dasar risetnya ada di `STRATEGY.md`.
 
 ## Ide besar
-*Riuh* berarti ramai dan gaduh yang menyenangkan. Ceritanya tiga babak, dan itu juga urutan hero di situs:
+Ceritanya tiga babak, dan itu juga urutan hero di situs:
 
-1. **Meja kosong.** Semua dimulai dari meja yang belum terisi.
-2. **Kami isi.** Kopi yang diracik seperti koktail, pastry yang baru keluar oven.
-3. **Kamu ramaikan.** Brand menyiapkan mejanya; keriuhan datang dari pengunjung.
+1. **An empty table.** Ruangan abu-abu dan sepi.
+2. **We set it.** Warna kembali saat minuman dan pastry datang.
+3. **You make it loud.** Brand menyiapkan mejanya; keriuhan datang dari pengunjung.
 
 ## Suara
-Bahasa Indonesia sehari-hari, "kamu", kalimat pendek. Boleh jenaka, tidak pernah menyindir.
+Bahasa Inggris, kalimat pendek, jenaka tanpa menyindir. Nama minuman tetap memakai satu kata Indonesia.
 Hindari klaim yang tidak bisa dibuktikan (rating, jumlah pelanggan, penghargaan).
 
 ## Warna
@@ -25,7 +28,7 @@ Hindari klaim yang tidak bisa dibuktikan (rating, jumlah pelanggan, penghargaan)
 | Krim | `#FFF4E0` | Latar halaman |
 | Tinta | `#2A1610` | Teks dan garis luar (cokelat espresso, bukan hitam) |
 
-Tiap produk memiliki satu warna: Senja Ribut = tomat, Jambu Gemes = jambu, Kelapa Kalem = pandan, Aren Santuy = kunyit, Telang Begadang = langit.
+Tiap produk memiliki satu warna: Senja Tonic = tomat, Jambu Sour = jambu, Kelapa Cloud = pandan, Aren Old Fashioned = kunyit, Telang Highball = langit.
 
 ## Huruf
 - **Bagel Fat One** untuk judul dan logo.

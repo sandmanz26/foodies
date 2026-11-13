@@ -1,4 +1,4 @@
-# RIUH — Coffee Cocktail Club
+# RIUH — Zero-proof coffee cocktail bar
 
 Situs brand satu halaman, front-end saja. Vite + JavaScript tanpa framework.
 
@@ -12,13 +12,13 @@ npm run preview  # melihat hasil build
 ## Peta
 - `index.html` — kerangka dan seluruh teks statis.
 - `src/content.js` — produk, alamat, voucher, janji, caption. **Alamat, jam buka, Instagram, dan isi voucher masih placeholder.**
-- `src/sections/` — satu berkas per section (`hero`, `menu`, `glass3d`, `racik`, `wall`, `voucher`).
+- `src/sections/` — satu berkas per section (`hero`, `menu`, `stir`, `wall`, `voucher`).
 - `src/brand/` — logo dan maskot sebagai SVG yang dibuat dari kode.
-- `public/media/` — foto WebP dan rangkaian frame hero.
-- `brand/` — panduan brand dan catatan generate.
-- `scripts/` — `build-logo`, `build-media`, `build-hero`. Dua yang terakhir membaca berkas mentah di `assets-src/raw/` (tidak ikut di repo karena ukurannya).
+- `public/media/` — foto WebP, rangkaian frame hero, dan lima klip minuman.
+- `brand/` — strategi (`STRATEGY.md`), panduan brand, dan catatan generate.
+- `scripts/` — `build-logo`, `build-media`, `build-hero`, `build-drinks`. Tiga yang terakhir membaca berkas mentah di `assets-src/raw/` (tidak ikut di repo karena ukurannya).
 
 ## Catatan teknis
-- Hero memakai 119 frame WebP yang digerakkan scroll; frame pertama adalah `<img>` biasa, sisanya dimuat setelah halaman selesai.
-- three.js dan GSAP hanya dimuat saat section menu mendekati layar. Tanpa WebGL, foto produk menggantikan gelas 3D.
-- Racikan dan voucher disimpan di `localStorage`. Kode voucher dibuat di browser dan **tidak divalidasi server**.
+- Hero memakai 191 frame WebP yang digerakkan scroll, dengan cross-fade antar frame; frame pertama adalah `<img>` biasa, sisanya dimuat setelah halaman selesai.
+- Tidak ada pustaka runtime: menu memakai video MP4 (sekitar 200 KB per klip), section stir memakai canvas 2D.
+- Voucher disimpan di `localStorage`. Kode voucher dibuat di browser dan **tidak divalidasi server**.

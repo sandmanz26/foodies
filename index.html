@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="id">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>RIUH — Coffee Cocktail Club</title>
-    <meta name="description" content="Meja kosong, jadi riuh. Kopi yang diracik seperti koktail, 0% alkohol, plus pastry yang dipanggang tiap pagi." />
+    <title>RIUH — Zero-proof coffee cocktail bar, Jakarta</title>
+    <meta name="description" content="Empty tables don't stay empty. RIUH is a zero-proof coffee cocktail bar from Jakarta: classic cocktails rebuilt on Indonesian coffee, no alcohol." />
     <meta name="theme-color" content="#F04E23" />
-    <meta property="og:title" content="RIUH — Coffee Cocktail Club" />
-    <meta property="og:description" content="Meja kosong, jadi riuh. Kopi yang diracik seperti koktail, 0% alkohol." />
+    <meta property="og:title" content="RIUH — Zero-proof coffee cocktail bar, Jakarta" />
+    <meta property="og:description" content="Empty tables don't stay empty. Classic cocktails rebuilt on Indonesian coffee, no alcohol." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="./media/og.jpg" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
@@ -16,52 +16,53 @@
     <script type="module" src="/src/main.js"></script>
   </head>
   <body>
-    <a class="skip" href="#cerita">Lewati ke isi</a>
+    <a class="skip" href="#story">Skip to content</a>
 
     <header class="nav" data-nav>
-      <a class="nav__logo" href="#hero" aria-label="RIUH, kembali ke atas" data-wordmark></a>
-      <nav class="nav__links" aria-label="Utama">
+      <a class="nav__logo" href="#hero" aria-label="RIUH, back to top" data-wordmark></a>
+      <nav class="nav__links" aria-label="Main">
         <a class="pill" href="#menu">Menu</a>
-        <a class="pill" href="#racik">Racik</a>
-        <a class="pill" href="#dinding">Tempat</a>
-        <a class="pill pill--cta" href="#voucher">Klaim voucher</a>
+        <a class="pill" href="#stir">Stir</a>
+        <a class="pill" href="#place">The place</a>
+        <a class="pill pill--cta" href="#voucher">First round on us</a>
       </nav>
     </header>
 
     <main>
       <!-- 1. HERO: the empty table fills up as you scroll -->
-      <section class="hero" id="hero" aria-label="Meja kosong, jadi riuh">
+      <section class="hero" id="hero" aria-label="Empty tables don't stay empty">
         <div class="hero__sticky">
           <div class="hero__stage">
             <picture>
               <source media="(max-width: 760px)" srcset="./media/hero/m/000.webp" />
-              <img class="hero__poster" src="./media/hero/d/000.webp" width="1440" height="810" alt="Meja kafe bundar berwarna kuning yang masih kosong, dilihat dari atas, dikelilingi empat kursi warna-warni di lantai kotak merah dan krem." fetchpriority="high" decoding="sync" />
+              <img class="hero__poster" src="./media/hero/d/000.webp" width="1280" height="714" alt="An empty round cafe table seen from above, four chairs tucked in on a checkered floor, the room dim and grey." fetchpriority="high" decoding="sync" />
             </picture>
             <canvas class="hero__canvas" aria-hidden="true"></canvas>
+            <div class="hero__gloom" aria-hidden="true"></div>
           </div>
 
           <div class="hero__beats">
             <div class="beat is-on" data-beat="0">
-              <p class="beat__kicker">Semua dimulai dari</p>
-              <h1 class="beat__title">Meja<br />kosong.</h1>
-              <p class="beat__hint"><span class="beat__arrow" aria-hidden="true"></span>Scroll pelan-pelan. Kita isi bareng.</p>
+              <p class="beat__kicker">Tuesday, 9:47 pm. Nobody's here.</p>
+              <h1 class="beat__title">An empty<br />table.</h1>
+              <p class="beat__hint"><span class="beat__arrow" aria-hidden="true"></span>Scroll slowly. Let's fix this.</p>
             </div>
             <div class="beat" data-beat="1">
-              <p class="beat__kicker">Lalu</p>
-              <p class="beat__title">Kami<br />isi.</p>
-              <p class="beat__body">Kopi yang diracik seperti koktail. Pastry yang baru keluar oven.</p>
+              <p class="beat__kicker">First,</p>
+              <p class="beat__title">we set<br />it.</p>
+              <p class="beat__body">Coffee built like cocktails. Pastry still warm. Not a drop of alcohol.</p>
             </div>
             <div class="beat" data-beat="2">
-              <p class="beat__kicker">Dan</p>
-              <p class="beat__title">Kamu<br />ramaikan.</p>
-              <p class="beat__body">Bawa teman, bawa cerita. Sisanya biar gelas yang bunyi.</p>
+              <p class="beat__kicker">Then</p>
+              <p class="beat__title">you make<br />it loud.</p>
+              <p class="beat__body">Bring your people. The glasses will do the rest.</p>
             </div>
           </div>
 
           <div class="hero__brand" data-brand aria-hidden="true">
             <div class="hero__brand-mark" data-wordmark></div>
-            <p class="hero__brand-desc">Coffee Cocktail Club</p>
-            <p class="hero__brand-tag">Meja kosong, jadi riuh.</p>
+            <p class="hero__brand-desc">Zero-proof coffee cocktail bar · Jakarta</p>
+            <p class="hero__brand-tag">Empty tables don't stay empty.</p>
           </div>
 
           <div class="hero__meter" aria-hidden="true"><span data-meter></span></div>
@@ -69,20 +70,20 @@
       </section>
 
       <!-- 2. STORY -->
-      <section class="story" id="cerita">
+      <section class="story" id="story">
         <div class="wrap story__grid">
           <div class="story__mascot" data-mascot="happy" aria-hidden="true"></div>
           <div>
-            <p class="eyebrow">Cerita kami</p>
-            <h2 class="story__title">Riuh itu bukan berisik.</h2>
+            <p class="eyebrow">RIUH <span class="say">/ree-ooh/</span> Indonesian for the good kind of loud</p>
+            <h2 class="story__title">The night out, without the morning after.</h2>
             <p class="story__text" data-reveal-words>
-              Riuh itu suara gelas beradu, tawa yang kepotong tawa, dan cerita yang nggak selesai-selesai. Kami meracik kopi seperti koktail, tanpa alkohol, supaya meja mana pun punya alasan untuk jadi ramai.
+              After dark, a city gives you two choices: a bar, or a cafe that wants its table back. We built the third one. A proper cocktail bar where the strongest thing in the glass is Indonesian coffee, so the whole table can stay, toast, and remember it tomorrow.
             </p>
           </div>
         </div>
         <div class="marquee" aria-hidden="true">
           <div class="marquee__track" data-marquee>
-            <span>0% alkohol</span><i></i><span>100% riuh</span><i></i><span>Coffee Cocktail Club</span><i></i><span>Dikocok, diaduk, dilapis</span><i></i>
+            <span>0% alcohol</span><i></i><span>100% loud</span><i></i><span>Shaken, stirred, layered</span><i></i><span>Born in Jakarta</span><i></i>
           </div>
         </div>
       </section>
@@ -91,8 +92,8 @@
       <section class="menu" id="menu" aria-labelledby="menu-title">
         <div class="menu__sticky">
           <div class="menu__head">
-            <p class="eyebrow">Menu andalan</p>
-            <h2 id="menu-title" class="menu__heading">Lima racikan. Lima watak.</h2>
+            <p class="eyebrow">The signatures</p>
+            <h2 id="menu-title" class="menu__heading">Five classics. Zero proof.</h2>
           </div>
 
           <p class="menu__ghost" aria-hidden="true" data-menu-ghost></p>
@@ -100,48 +101,62 @@
           <div class="menu__info" data-menu-info aria-live="polite"></div>
 
           <div class="menu__stage">
-            <canvas class="menu__canvas" data-menu-canvas aria-hidden="true"></canvas>
-            <p class="menu__drag" aria-hidden="true">geser gelasnya</p>
+            <div class="menu__arch" data-menu-arch>
+              <video class="menu__video" data-menu-video muted playsinline preload="none" disablepictureinpicture></video>
+              <button class="menu__replay" type="button" data-menu-replay aria-label="Watch it being built again">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.600-5.900M4 4v4.500h4.500" /></svg>
+              </button>
+            </div>
           </div>
 
-          <figure class="menu__photo polaroid" data-menu-photo></figure>
+          <div class="menu__side" data-menu-side></div>
 
           <div class="menu__controls">
-            <button class="round" type="button" data-menu-prev aria-label="Racikan sebelumnya">
+            <button class="round" type="button" data-menu-prev aria-label="Previous drink">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" /></svg>
             </button>
-            <div class="menu__dots" data-menu-dots role="tablist" aria-label="Pilih racikan"></div>
-            <button class="round" type="button" data-menu-next aria-label="Racikan berikutnya">
+            <div class="menu__dots" data-menu-dots role="tablist" aria-label="Choose a drink"></div>
+            <button class="round" type="button" data-menu-next aria-label="Next drink">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
             </button>
           </div>
         </div>
       </section>
 
-      <!-- 4. RACIK: make your own -->
-      <section class="racik" id="racik" aria-labelledby="racik-title">
+      <!-- 4. STIR: the visitor makes the noise -->
+      <section class="stir" id="stir" aria-labelledby="stir-title">
         <div class="scallop" aria-hidden="true"></div>
-        <div class="wrap racik__grid">
-          <div class="racik__copy">
-            <p class="eyebrow">Giliranmu</p>
-            <h2 id="racik-title" class="racik__title">Bahagia itu<br />versi kamu.</h2>
-            <p class="racik__lead">Di RIUH nggak ada racikan yang salah. Coba bikin punyamu: tiga langkah, dua puluh detik.</p>
-            <ol class="racik__steps" data-racik-steps></ol>
+        <div class="wrap stir__grid">
+          <div class="stir__copy">
+            <p class="eyebrow">Your turn</p>
+            <h2 id="stir-title" class="stir__title">Now stir. Make some noise.</h2>
+            <p class="stir__lead">Cold brew on one side, coconut milk on the other. A Kelapa Cloud isn't finished until someone stirs it. That someone is you.</p>
+            <div class="stir__meter" role="progressbar" aria-label="How loud it is" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-stir-meter>
+              <span>quiet</span>
+              <div class="stir__letters" data-wordmark></div>
+              <span>loud</span>
+            </div>
+            <p class="stir__status" data-stir-status aria-live="polite">Drag in circles to stir.</p>
+            <div class="stir__actions">
+              <button class="btn btn--ghost" type="button" data-stir-sound aria-pressed="false">Sound: off</button>
+              <a class="btn" href="#voucher" data-stir-cta hidden>Claim your first round</a>
+              <button class="btn btn--ghost" type="button" data-stir-again hidden>Pour another</button>
+            </div>
           </div>
-          <div class="racik__bench">
-            <div class="racik__glass" data-racik-glass></div>
-            <div class="racik__panel" data-racik-panel></div>
+          <div class="stir__bench">
+            <canvas class="stir__canvas" data-stir-canvas width="720" height="720" tabindex="0" role="img" aria-label="A glass seen from above. Drag in circles, or use the arrow keys, to stir it. Press Enter to have it stirred for you."></canvas>
+            <p class="stir__keys">Arrow keys stir. Enter stirs it for you.</p>
           </div>
         </div>
       </section>
 
       <!-- 5. WALL: the place -->
-      <section class="wall" id="dinding" aria-labelledby="wall-title">
+      <section class="wall" id="place" aria-labelledby="wall-title">
         <div class="scallop" style="--c: var(--krim)" aria-hidden="true"></div>
         <div class="wrap wall__head">
-          <p class="eyebrow">Tempatnya</p>
-          <h2 id="wall-title" class="wall__title">Dinding Riuh</h2>
-          <p class="wall__lead">Lantai kotak-kotak, meja kuning, dan sisa-sisa keriuhan. Fotonya boleh digeser.</p>
+          <p class="eyebrow">The place</p>
+          <h2 id="wall-title" class="wall__title">The loud wall</h2>
+          <p class="wall__lead">Checkered floor, yellow tables, and what a good night leaves behind. Go on, move the photos around.</p>
         </div>
         <div class="wall__board" data-wall></div>
       </section>
@@ -150,8 +165,8 @@
       <section class="janji" id="janji" aria-labelledby="janji-title">
         <div class="scallop" style="--c: var(--pandan)" aria-hidden="true"></div>
         <div class="wrap">
-          <p class="eyebrow">Kenapa RIUH</p>
-          <h2 id="janji-title" class="janji__title">Empat janji dari balik bar.</h2>
+          <p class="eyebrow">Why RIUH</p>
+          <h2 id="janji-title" class="janji__title">Four house rules.</h2>
           <ul class="janji__list" data-janji></ul>
         </div>
       </section>
@@ -161,15 +176,15 @@
         <div class="scallop" aria-hidden="true"></div>
         <div class="wrap voucher__grid">
           <div class="voucher__copy">
-            <p class="eyebrow">Sampai ketemu</p>
-            <h2 id="voucher-title" class="voucher__title">Mejamu sudah kami siapkan.</h2>
+            <p class="eyebrow">See you there</p>
+            <h2 id="voucher-title" class="voucher__title">We saved you a table.</h2>
             <p class="voucher__lead" data-voucher-lead></p>
             <form class="voucher__form" data-voucher-form novalidate>
               <label class="field">
-                <span class="field__label">Nama panggilanmu</span>
-                <input class="field__input" name="nama" type="text" autocomplete="given-name" maxlength="18" placeholder="mis. Dimas" required />
+                <span class="field__label">What should we call you?</span>
+                <input class="field__input" name="name" type="text" autocomplete="given-name" maxlength="18" placeholder="e.g. Dimas" required />
               </label>
-              <button class="btn btn--big" type="submit">Klaim voucher</button>
+              <button class="btn btn--big" type="submit">Claim it</button>
               <p class="field__error" data-voucher-error role="alert" hidden></p>
             </form>
             <dl class="visit" data-visit></dl>
@@ -177,8 +192,8 @@
           <div class="voucher__side">
             <div class="ticket" data-ticket aria-live="polite"></div>
             <figure class="voucher__photo polaroid polaroid--wide">
-              <img data-photo="place-exterior" alt="Tampak depan RIUH: ruko sudut berwarna krem dengan papan nama merah bertuliskan RIUH dan awning merah." loading="lazy" decoding="async" />
-              <figcaption>Cari awning merahnya.</figcaption>
+              <img data-photo="place-exterior" alt="The front of RIUH: a cream corner shophouse with a red sign reading RIUH and a red scalloped awning." loading="lazy" decoding="async" />
+              <figcaption>Look for the red awning.</figcaption>
             </figure>
           </div>
         </div>
@@ -189,7 +204,7 @@
       <div class="scallop" aria-hidden="true"></div>
       <div class="wrap footer__grid">
         <div class="footer__mark" data-wordmark aria-label="RIUH"></div>
-        <p class="footer__tag">Meja kosong, jadi riuh.</p>
+        <p class="footer__tag">Empty tables don't stay empty.</p>
         <p class="footer__small" data-footer-small></p>
       </div>
     </footer>

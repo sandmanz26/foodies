@@ -1,7 +1,7 @@
 // Tiny persistent store. There is no backend: everything the visitor makes stays in their browser.
-const KEY = 'riuh:v1';
+const KEY = 'riuh:v2';
 const listeners = new Set();
-let state = { racik: null, voucher: null };
+let state = { stirred: false, voucher: null };
 try {
   state = { ...state, ...JSON.parse(localStorage.getItem(KEY) || '{}') };
 } catch {

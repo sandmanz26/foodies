@@ -9,12 +9,12 @@ const RAW = 'assets-src/raw';
 const OUT = 'public/media/hero';
 const TMP = `${RAW}/.frames`;
 const CLIPS = [
-  { file: process.env.HERO_V1 || 'hero-v1.mp4', frames: 44 },
-  { file: process.env.HERO_V2 || 'hero-v2.mp4', frames: 76 },
+  { file: process.env.HERO_V1 || 'hero-v1.mp4', frames: 72 },
+  { file: process.env.HERO_V2 || 'hero-v2b.mp4', frames: 120 },
 ];
 const SETS = [
-  { key: 'd', vf: 'scale=1440:-2', quality: 62 },
-  { key: 'm', vf: 'crop=ih:ih,scale=720:720', quality: 60 },
+  { key: 'd', vf: 'scale=1280:-2', quality: 58 },
+  { key: 'm', vf: 'crop=ih:ih,scale=640:640', quality: 58 },
 ];
 
 rmSync(OUT, { recursive: true, force: true });

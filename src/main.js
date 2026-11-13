@@ -4,7 +4,7 @@ import { wordmark, siRiuh } from './brand/shapes.js';
 import { initRise } from './lib/fx.js';
 import { initHero } from './sections/hero.js';
 import { initMenu } from './sections/menu.js';
-import { initRacik } from './sections/racik.js';
+import { initStir } from './sections/stir.js';
 import { initWall } from './sections/wall.js';
 import { initPromises, initVoucher } from './sections/voucher.js';
 
@@ -28,11 +28,11 @@ lightWords();
 const track = qs('[data-marquee]');
 track.innerHTML += track.innerHTML;
 
-qsa('.story__title, .racik__title, .racik__bench, .wall__title, .janji__title, .voucher__title, .ticket, .voucher__photo').forEach((el) => el.setAttribute('data-rise', ''));
+qsa('.story__title, .stir__title, .stir__bench, .wall__title, .janji__title, .voucher__title, .ticket, .voucher__photo').forEach((el) => el.setAttribute('data-rise', ''));
 
 initHero();
 initMenu();
-initRacik();
+initStir();
 initWall();
 initPromises();
 initVoucher();

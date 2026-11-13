@@ -5,8 +5,8 @@ Setiap prompt di-roast sebelum dikirim (apa yang akan salah?), dan setiap hasil 
 ## Pemakaian credit
 | Jenis | Anggaran | Terpakai | Rincian |
 | --- | --- | --- | --- |
-| Gambar | 75 | 40 | 20 gambar x 2 credit (Nano Banana Pro, 2K) |
-| Video | 70 | 26,25 | 1 klip 5 dtk (6,25) + 2 take klip 8 dtk (10 + 10), Kling 3.0 Omni Frames, pro, tanpa audio |
+| Gambar | 75 | 50 | 25 gambar x 2 credit (Nano Banana Pro, 2K) |
+| Video | 70 | 57,5 | Hero: 1 klip 5 dtk (6,25) + 2 take 8 dtk (20). Menu: 5 klip 5 dtk (31,25). Kling 3.0 Omni Frames, pro, tanpa audio |
 
 ## Roast sebelum generate (yang mengubah prompt)
 - **"Top-down" sering jadi sudut 3/4** -> ditulis eksplisit: kamera tegak lurus lantai, tanpa kemiringan perspektif.
@@ -36,6 +36,11 @@ Setiap prompt di-roast sebelum dikirim (apa yang akan salah?), dan setiap hasil 
 | Video 1 (meja terisi) | Lolos | |
 | Video 2 take 1 | Ditolak | Tiga orang masuk berdesakan dari sisi yang sama |
 | Video 2 take 2 | Dipakai | Lebih rapi. Cacat tersisa: rambut pria berbaju merah berubah dari lurus ke keriting saat ia duduk |
+
+## Putaran kedua: video menu
+Gelas 3D buatan kode diganti video nyata. Untuk tiap minuman dibuat frame "gelas kosong" dari foto produknya, lalu video dari gelas kosong ke minuman jadi.
+- **Roast sebelum generate:** satu klip diuji dulu (Senja) untuk memastikan rasio 4:5 terjaga dan cairan tidak "memudar masuk", baru empat lainnya dipesan.
+- **Kelima frame gelas kosong:** lolos, posisi dan cahaya identik dengan foto produk.
 
 ## Yang perlu diketahui
 Semua foto adalah visual konsep hasil generate, termasuk orang-orangnya. Ganti dengan foto asli begitu tokonya ada.

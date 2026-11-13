@@ -5,14 +5,6 @@ export default defineConfig({
   build: {
     target: 'es2020',
     assetsInlineLimit: 2048,
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules/three')) return 'three';
-          if (id.includes('node_modules/gsap')) return 'gsap';
-        },
-      },
-    },
   },
   server: { host: true },
 });
