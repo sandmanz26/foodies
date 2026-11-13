@@ -10,7 +10,7 @@ const OUT = 'public/media/hero';
 const TMP = `${RAW}/.frames`;
 const CLIPS = [
   { file: process.env.HERO_V1 || 'hero-v1.mp4', frames: 72 },
-  { file: process.env.HERO_V2 || 'hero-v2b.mp4', frames: 120 },
+  { file: process.env.HERO_V2 || 'hero-v2c.mp4', frames: 120 },
 ];
 const SETS = [
   { key: 'd', vf: 'scale=1280:-2', quality: 58 },

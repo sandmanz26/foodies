@@ -36,6 +36,7 @@ Setiap prompt di-roast sebelum dikirim (apa yang akan salah?), dan setiap hasil 
 | Video 1 (meja terisi) | Lolos | |
 | Video 2 take 1 | Ditolak | Tiga orang masuk berdesakan dari sisi yang sama |
 | Video 2 take 2 | Dipakai | Lebih rapi. Cacat tersisa: rambut pria berbaju merah berubah dari lurus ke keriting saat ia duduk |
+| Video 2 take 2, retus | Diperbaiki | Di 2 detik terakhir perempuan berhijab punya tiga tangan. Tangan berlebih dihapus per frame dan pola ubin di bawahnya direkonstruksi (`scripts/fix-hero-hand.py`), tanpa credit |
 
 ## Putaran kedua: video menu
 Gelas 3D buatan kode diganti video nyata. Untuk tiap minuman dibuat frame "gelas kosong" dari foto produknya, lalu video dari gelas kosong ke minuman jadi.
