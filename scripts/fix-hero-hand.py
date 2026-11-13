@@ -1,88 +1,95 @@
-"""Removes a third hand the video model gave one of the friends in the last seconds of hero clip 2.
+"""Removes a third arm the video model gave one of the friends as the toast lands in hero clip 2.
 
-The extra hand lies flat on the floor to the lower right of her chair, across the corner where four
-tiles meet. In each affected frame it is found by skin colour inside a fixed search window; the floor
-under it is then rebuilt from the checkerboard itself: the two tile joints are located from the
-visible floor around the hand, and each hidden pixel takes the colour of the tile it belongs to.
+From frame 138 on, the woman in the green sweater grows a third arm: a sleeve that leaves her side
+below the croissant arm and ends in an open hand on the floor to the lower right of her chair.
+The camera is locked off, so frame 136 (her last frame with two arms) is a clean plate of that patch
+of floor and of her elbow. In every later frame, anything sweater-green, skin-toned or shadow-dark that sits where the
+plate shows floor, inside the area the arm sweeps through, is replaced by the plate. Confetti that
+lands outside the arm is left alone.
 
-usage: fix-hero-hand.py <frames_dir>   (PNG frames, edited in place)
+usage: fix-hero-hand.py <frames_dir>   (PNG frames at 24 fps, edited in place)
 """
 import sys, glob
 import numpy as np
-from PIL import Image, ImageFilter
+from PIL import Image, ImageDraw
 from scipy import ndimage
 
-X0, X1, Y0, Y1 = 1285, 1500, 600, 800   # search window in the 1928x1076 frame
-FIRST = 136                              # first frame (24 fps) in which the hand can appear
-
-def rebuild_floor(win, m):
-    r, g, b = win[..., 0], win[..., 1], win[..., 2]
-    red = (r - g > 90) & (r > 110)
-    cream = (r > 160) & (g > 140) & (b > 80) & (r - g < 60) & ((g - b) / np.maximum(r - b, 1) > 0.5)
-    ok = (red | cream) & ~m
-    ys, xs = np.where(m)
-    y0, y1 = max(0, ys.min() - 45), min(m.shape[0], ys.max() + 45)
-    x0, x1 = max(0, xs.min() - 45), min(m.shape[1], xs.max() + 45)
-    v = np.where(ok, np.where(red, 1.0, -1.0), 0.0)[y0:y1, x0:x1]
-    P = np.pad(v.cumsum(0).cumsum(1), ((1, 0), (1, 0)))
-    box = lambda ya, yb, xa, xb: P[yb, xb] - P[ya, xb] - P[yb, xa] + P[ya, xa]
-    h, w = v.shape
-    best = (-1, 0, 0, 1)
-    # a checkerboard corner at (jx, jy): opposite quadrants share a colour
-    for jy in range(0, h + 1, 2):
-        for jx in range(0, w + 1, 2):
-            sc = box(0, jy, 0, jx) + box(jy, h, jx, w) - box(0, jy, jx, w) - box(jy, h, 0, jx)
-            if abs(sc) > best[0]:
-                best = (abs(sc), jy, jx, 1 if sc > 0 else -1)
-    _, jy, jx, sign = best
-    jy += y0; jx += x0
-    yy, xx = np.mgrid[0:m.shape[0], 0:m.shape[1]]
-    is_red = ((yy < jy) == (xx < jx)) == (sign > 0)
-    out = win.copy()
-    near = np.zeros_like(m); near[y0:y1, x0:x1] = True
-    for cls, want in ((red, True), (cream, False)):
-        src = cls & ~m & near
-        if src.sum() > 50:
-            out[m & (is_red == want)] = np.median(win[src], axis=0)
-    grout = ~red & ~cream & ~m & near & ((np.abs(yy - jy) < 3) | (np.abs(xx - jx) < 3))
-    if grout.sum() > 20:
-        out[m & ((np.abs(yy - jy) < 2) | (np.abs(xx - jx) < 2))] = np.median(win[grout], axis=0)
-    return out
+PLATE = 136          # 1-based frame number of the clean plate
+FIRST = 137          # first frame to repair
+# area the third arm sweeps through (1928x1076 frame); stays clear of her torso and of the
+# red-shirted friend's arm on the left
+# where the hand first slides out from under her elbow (frames 138-156); there the plate shows her
+# own sleeve, which has barely moved, so anything new there is simply swapped back to the plate
+ELBOW = (1235, 585, 1365, 712)
+ELBOW_LAST = 156
+REGION = [(1238, 652), (1300, 628), (1356, 640), (1440, 655), (1520, 700), (1520, 830), (1250, 830), (1238, 760)]
 
 
-def fix(path):
-    im = Image.open(path).convert('RGB')
-    a = np.asarray(im).astype(np.float32)
-    win = a[Y0:Y1, X0:X1]
-    r, g, b = win[..., 0], win[..., 1], win[..., 2]
+def classes(a):
+    r, g, b = a[..., 0], a[..., 1], a[..., 2]
+    green = (g > r + 8) & (g > b + 8)
     ratio = (r - g) / np.maximum(r, 1)
-    # skin is pinker than the cream tiles: its green sits much closer to its blue
     pink = (g - b) / np.maximum(r - b, 1)
-    skin = (r > 150) & (ratio > 0.15) & (ratio < 0.45) & (pink < 0.5) & (b > 80)
-    skin = ndimage.binary_opening(skin, iterations=2)
-    lab, n = ndimage.label(skin)
+    skin = (r > 120) & (ratio > 0.12) & (ratio < 0.5) & (pink < 0.55) & (b > 60)
+    return green, skin
+
+
+def region_mask(shape):
+    m = Image.new('L', (shape[1], shape[0]), 0)
+    ImageDraw.Draw(m).polygon(REGION, fill=255)
+    return np.asarray(m) > 0
+
+
+def fix_elbow(a, plate):
+    x0, y0, x1, y1 = ELBOW
+    w, p = a[y0:y1, x0:x1], plate[y0:y1, x0:x1]
+    # a motion-blurred hand is too pale to pass as skin, so here anything that changed is swapped back
+    new = np.abs(w - p).sum(axis=2) > 36
+    new = ndimage.binary_opening(new, iterations=1)
+    if new.sum() < 40:
+        return a, 0
+    m = ndimage.binary_dilation(new, iterations=6)
+    alpha = ndimage.gaussian_filter(m.astype(np.float32), 1.6)[..., None]
+    a = a.copy()
+    a[y0:y1, x0:x1] = w * (1 - alpha) + p * alpha
+    return a, int(m.sum())
+
+
+def fix(a, plate, reg, plate_green, plate_skin):
+    green, skin = classes(a)
+    diff = np.abs(a - plate).sum(axis=2)
+    arm = (green | skin) & ~plate_green & ~plate_skin & (diff > 50) & reg
+    arm = ndimage.binary_opening(arm, iterations=1)
+    lab, n = ndimage.label(arm)
     if n == 0:
-        return 0
-    sizes = ndimage.sum(skin, lab, range(1, n + 1))
-    k = int(np.argmax(sizes)) + 1
-    if not 900 < sizes[k - 1] < 9000:
-        return 0
-    m = ndimage.binary_dilation(lab == k, iterations=9)
-    # the hand's hard shadow falls to the lower right: take it out with the hand
-    m |= np.roll(np.roll(m, 9, axis=0), 7, axis=1)
-    out = rebuild_floor(win, m)
-    # soften along the fill, re-grain it, and feather the edge so the patch does not read as flat
-    patch = np.asarray(Image.fromarray(out.clip(0, 255).astype('uint8')).filter(ImageFilter.GaussianBlur(1.6))).astype(np.float32)
-    patch += np.random.default_rng(int(sizes[k - 1])).normal(0, 2.0, patch.shape[:2] + (1,))
-    alpha = ndimage.gaussian_filter(m.astype(np.float32), 2.2)[..., None]
-    a[Y0:Y1, X0:X1] = win * (1 - alpha) + patch * alpha
-    Image.fromarray(a.clip(0, 255).astype('uint8')).save(path)
-    return int(sizes[k - 1])
+        return a, 0
+    sizes = ndimage.sum(arm, lab, range(1, n + 1))
+    keep = np.isin(lab, [i + 1 for i, s in enumerate(sizes) if s > 120])
+    if keep.sum() < 300:
+        return a, 0
+    m = ndimage.binary_dilation(keep, iterations=7)
+    # the arm's hard shadow falls down and to the right: take out floor that got darker near it
+    luma = a.mean(axis=2)
+    pl = plate.mean(axis=2)
+    shadow = ndimage.binary_dilation(m, iterations=26) & (pl - luma > 18) & reg
+    m = ndimage.binary_closing(m | shadow, iterations=3) & ndimage.binary_dilation(reg, iterations=8)
+    alpha = ndimage.gaussian_filter(m.astype(np.float32), 2.0)[..., None]
+    return a * (1 - alpha) + plate * alpha, int(m.sum())
+
 
 if __name__ == '__main__':
     files = sorted(glob.glob(sys.argv[1] + '/*.png'))
+    plate = np.asarray(Image.open(files[PLATE - 1]).convert('RGB')).astype(np.float32)
+    reg = region_mask(plate.shape)
+    pg, ps = classes(plate)
     done = 0
-    for i, f in enumerate(files):
-        if i >= FIRST and fix(f):
+    for k, f in enumerate(files[FIRST - 1:], start=FIRST):
+        a = np.asarray(Image.open(f).convert('RGB')).astype(np.float32)
+        out, px = fix(a, plate, reg, pg, ps)
+        if k <= ELBOW_LAST:
+            out, px2 = fix_elbow(out, plate)
+            px += px2
+        if px:
+            Image.fromarray(out.clip(0, 255).astype('uint8')).save(f)
             done += 1
-    print(f'patched {done} of {len(files)} frames')
+    print(f'patched {done} of {len(files) - FIRST + 1} frames')
