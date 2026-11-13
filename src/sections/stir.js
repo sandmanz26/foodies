@@ -1,13 +1,15 @@
-// Stir: the glass is seen from above, the same way the hero table is. Cold brew and coconut
-// milk sit apart until the visitor stirs them together, and the brand name fills up as they do:
-// in a bar called "loud", the visitor is the one who makes the noise.
-import { qs, qsa, clamp, mixHex } from '../lib/dom.js';
+// Stir: a real glass, filmed from straight above on the same yellow table the story began on.
+// Cold brew and coconut milk sit unmixed until the visitor stirs; their circling gesture drives
+// the footage frame by frame, and the brand name fills up as they go. In a bar whose name means
+// "loud", the visitor is the one who makes the noise.
+import manifest from '../stir-manifest.json';
+import { qs, qsa, clamp, BASE } from '../lib/dom.js';
 import { setState } from '../lib/state.js';
 import { confetti, whenVisible } from '../lib/fx.js';
+import { track } from '../lib/growth.js';
 
 const TURNS = 9; // full turns of the liquid needed
-const COFFEE = '#4A2513', MILK = '#FFF6E6', LATTE = '#C99A6B', INK = '#2A1610';
-const SIZE = 720, C = SIZE / 2, R = 290;
+const SIZE = 720, C = SIZE / 2, GLASS = 190; // glass radius inside the frame, in canvas px
 
 export function initStir() {
   const canvas = qs('[data-stir-canvas]');
@@ -19,29 +21,42 @@ export function initStir() {
   const soundBtn = qs('[data-stir-sound]');
   const letters = qsa('.wm-l', meter);
   const touch = matchMedia('(pointer: coarse)').matches;
+  const N = manifest.count;
+  const frames = new Array(N);
 
-  let blobs, ice, turned, vel, auto, done, pointer, lastAngle, raf = 0, visible = false, last = 0, clinkAt = 0;
+  let turned, vel, auto, done, pointer, lastAngle, shown = 0, raf = 0, visible = false, last = 0, clinkAt = 0, asked = false;
   let audio = null, soundOn = false;
-
-  function reset() {
-    // milk starts as a soft-edged half; every blob remembers its polar position
-    blobs = [];
-    for (let i = 0; i < 520; i++) {
-      const x = Math.random() * R * 0.96, y = (Math.random() * 2 - 1) * R * 0.96;
-      if (Math.hypot(x, y) > R * 0.94) continue;
-      const edge = Math.sin(y * 0.02) * 26 + 18;
-      if (x < edge) continue;
-      blobs.push({ r: Math.hypot(x, y), a: Math.atan2(y, x), s: 18 + Math.random() * 26, drift: Math.random() * R * 0.9 });
-    }
-    ice = [0.5, 2.6, 4.4].map((a, i) => ({ a, r: R * (0.38 + i * 0.1), rot: a, s: 78 - i * 8 }));
-    turned = 0; vel = 0; auto = false; done = false; pointer = null; lastAngle = null;
-    cta.hidden = true; again.hidden = true;
-    setMeter();
-    say();
-  }
 
   const mix = () => clamp(turned / (Math.PI * 2 * TURNS));
 
+  function loadFrames() {
+    if (asked) return;
+    asked = true;
+    let cursor = 0;
+    const order = [];
+    const seen = new Set();
+    for (const step of [8, 4, 2, 1]) for (let i = 0; i < N; i += step) if (!seen.has(i)) { seen.add(i); order.push(i); }
+    const next = () => {
+      if (cursor >= order.length) return;
+      const i = order[cursor++];
+      const img = new Image();
+      img.onload = async () => { try { await img.decode(); } catch { /* still drawable */ } frames[i] = img; if (i === 0) draw(); next(); };
+      img.onerror = next;
+      img.src = `${BASE}media/stir/${String(i).padStart(3, '0')}.webp`;
+    };
+    for (let k = 0; k < 4; k++) next();
+  }
+  function nearest(i) {
+    if (frames[i]) return frames[i];
+    for (let d = 1; d < N; d++) { if (frames[i - d]) return frames[i - d]; if (frames[i + d]) return frames[i + d]; }
+    return null;
+  }
+
+  function reset() {
+    turned = 0; vel = 0; auto = false; done = false; pointer = null; lastAngle = null; shown = 0;
+    cta.hidden = true; again.hidden = true;
+    setMeter(); say();
+  }
   function setMeter() {
     const m = mix();
     meter.setAttribute('aria-valuenow', Math.round(m * 100));
@@ -73,6 +88,7 @@ export function initStir() {
   function finish() {
     done = true; auto = false;
     setState({ stirred: true });
+    track('stir_completed');
     cta.hidden = false; again.hidden = false;
     say(); clink(true);
     const r = canvas.getBoundingClientRect();
@@ -82,81 +98,56 @@ export function initStir() {
   function step(dt) {
     if (auto && !done) vel += (8 - vel) * Math.min(1, dt * 4);
     const d = vel * dt;
-    if (!done && Math.abs(d) > 0) {
+    if (!done && d !== 0) {
       turned += Math.abs(d);
       if (turned - clinkAt > 1.5) { clinkAt = turned; clink(false); }
       setMeter(); say();
       if (mix() >= 1) finish();
     }
-    const m = mix();
-    for (const b of blobs) {
-      b.a += d * (0.3 + 0.9 * (1 - b.r / R)); // the middle turns faster: that is what draws the spiral
-      b.r += (b.drift - b.r) * Math.min(1, Math.abs(d) * 0.05); // and slowly spreads the milk out
-    }
-    for (const c of ice) { c.a += d * 0.75; c.rot += d * 0.4; }
     vel *= Math.pow(0.04, dt); // liquid drag
     if (Math.abs(vel) < 0.01) vel = 0;
-    return m;
   }
 
-  function draw(m) {
-    ctx.clearRect(0, 0, SIZE, SIZE);
-    // shadow + glass rim
-    ctx.fillStyle = 'rgba(42,22,16,.22)';
-    ctx.beginPath(); ctx.ellipse(C + 16, C + 20, R + 26, R + 26, 0, 0, 7); ctx.fill();
-    ctx.fillStyle = '#FFFDF8'; ctx.strokeStyle = INK; ctx.lineWidth = 7;
-    ctx.beginPath(); ctx.arc(C, C, R + 24, 0, 7); ctx.fill(); ctx.stroke();
-    // liquid
+  function spoon() {
+    // a bar spoon: steel bowl in the drink, long handle leaving the glass toward the hand
+    const ang = Math.atan2(pointer.y - C, pointer.x - C);
     ctx.save();
-    ctx.beginPath(); ctx.arc(C, C, R, 0, 7); ctx.clip();
-    ctx.fillStyle = mixHex(COFFEE, LATTE, m * m);
-    ctx.fillRect(0, 0, SIZE, SIZE);
-    ctx.fillStyle = mixHex(MILK, LATTE, m * 0.85);
-    ctx.globalAlpha = 0.55 * (1 - m * m * 0.8);
-    for (const b of blobs) {
-      ctx.beginPath(); ctx.arc(C + Math.cos(b.a) * b.r, C + Math.sin(b.a) * b.r, b.s, 0, 7); ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-    if (done) {
-      // a small smile drawn in milk, like latte art
-      ctx.strokeStyle = MILK; ctx.fillStyle = MILK; ctx.lineWidth = 14; ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.arc(C - 70, C - 50, 16, 0, 7); ctx.fill();
-      ctx.beginPath(); ctx.arc(C + 70, C - 50, 16, 0, 7); ctx.fill();
-      ctx.beginPath(); ctx.arc(C, C - 10, 110, 0.5, Math.PI - 0.5); ctx.stroke();
-    }
+    ctx.translate(pointer.x, pointer.y);
+    ctx.rotate(ang);
+    ctx.shadowColor = 'rgba(42,22,16,.35)'; ctx.shadowBlur = 14; ctx.shadowOffsetX = 8; ctx.shadowOffsetY = 10;
+    const steel = ctx.createLinearGradient(0, -12, 0, 12);
+    steel.addColorStop(0, '#FDFDFB'); steel.addColorStop(0.45, '#C9CCD1'); steel.addColorStop(0.55, '#8E949C'); steel.addColorStop(1, '#E6E8EB');
+    ctx.strokeStyle = steel; ctx.lineWidth = 11; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(26, 0); ctx.lineTo(560, 0); ctx.stroke();
+    ctx.shadowColor = 'transparent';
+    const bowl = ctx.createRadialGradient(-8, -8, 2, 0, 0, 40);
+    bowl.addColorStop(0, '#FFFFFF'); bowl.addColorStop(0.5, '#C9CCD1'); bowl.addColorStop(1, '#7E858E');
+    ctx.fillStyle = bowl; ctx.globalAlpha = 0.9;
+    ctx.beginPath(); ctx.ellipse(0, 0, 38, 25, 0, 0, 7); ctx.fill();
     ctx.restore();
-    ctx.strokeStyle = INK; ctx.lineWidth = 6;
-    ctx.beginPath(); ctx.arc(C, C, R, 0, 7); ctx.stroke();
-    // ice
-    for (const c of ice) {
-      ctx.save();
-      ctx.translate(C + Math.cos(c.a) * c.r, C + Math.sin(c.a) * c.r); ctx.rotate(c.rot);
-      ctx.fillStyle = 'rgba(255,253,248,.86)'; ctx.strokeStyle = INK; ctx.lineWidth = 5;
-      ctx.beginPath(); ctx.roundRect(-c.s / 2, -c.s / 2, c.s, c.s, 14); ctx.fill(); ctx.stroke();
-      ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth = 6; ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.moveTo(-c.s * 0.22, -c.s * 0.24); ctx.lineTo(c.s * 0.1, -c.s * 0.24); ctx.stroke();
-      ctx.restore();
+  }
+
+  function draw() {
+    const f = mix() * (N - 1);
+    shown += (f - shown) * 0.35; // ease the footage so quick flicks do not jump
+    const lo = Math.floor(shown), frac = shown - lo;
+    const a = nearest(lo);
+    if (a) {
+      ctx.globalAlpha = 1; ctx.drawImage(a, 0, 0, SIZE, SIZE);
+      const b = frames[lo + 1];
+      if (b && frac > 0.03) { ctx.globalAlpha = frac; ctx.drawImage(b, 0, 0, SIZE, SIZE); ctx.globalAlpha = 1; }
     }
-    // spoon follows the hand
-    if (pointer && !done) {
-      const ang = Math.atan2(pointer.y - C, pointer.x - C);
-      ctx.save(); ctx.translate(pointer.x, pointer.y); ctx.rotate(ang);
-      ctx.strokeStyle = INK; ctx.lineWidth = 22; ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.moveTo(30, 0); ctx.lineTo(420, 0); ctx.stroke();
-      ctx.strokeStyle = '#FFC93C'; ctx.lineWidth = 12;
-      ctx.beginPath(); ctx.moveTo(30, 0); ctx.lineTo(420, 0); ctx.stroke();
-      ctx.fillStyle = '#FFC93C'; ctx.strokeStyle = INK; ctx.lineWidth = 5;
-      ctx.beginPath(); ctx.ellipse(0, 0, 46, 32, 0, 0, 7); ctx.fill(); ctx.stroke();
-      ctx.restore();
-    }
+    if (pointer && !done) spoon();
+    return Math.abs(f - shown) > 0.02;
   }
 
   function tick(now) {
     raf = 0;
     const dt = Math.min(0.05, (now - last) / 1000 || 0.016);
     last = now;
-    draw(step(dt));
-    if (visible && (vel !== 0 || auto || pointer)) kick();
+    step(dt);
+    const settling = draw();
+    if (visible && (vel !== 0 || auto || pointer || settling)) kick();
   }
   const kick = () => { if (!raf && visible) { last = performance.now(); raf = requestAnimationFrame(tick); } };
 
@@ -165,32 +156,33 @@ export function initStir() {
     return { x: ((e.clientX - r.left) / r.width) * SIZE, y: ((e.clientY - r.top) / r.height) * SIZE };
   };
   canvas.addEventListener('pointerdown', (e) => {
-    pointer = toCanvas(e);
-    if (Math.hypot(pointer.x - C, pointer.y - C) > R + 30) { pointer = null; return; }
+    const p = toCanvas(e);
+    if (Math.hypot(p.x - C, p.y - C) > GLASS + 60) return;
+    pointer = p;
     canvas.setPointerCapture(e.pointerId);
-    lastAngle = Math.atan2(pointer.y - C, pointer.x - C);
+    lastAngle = Math.atan2(p.y - C, p.x - C);
     kick();
   });
   canvas.addEventListener('pointermove', (e) => {
     if (!pointer) return;
     const p = toCanvas(e);
     const d = Math.hypot(p.x - C, p.y - C);
-    // keep the spoon inside the glass
-    pointer = d > R - 40 ? { x: C + ((p.x - C) / d) * (R - 40), y: C + ((p.y - C) / d) * (R - 40) } : p;
+    const lim = GLASS - 34; // keep the spoon inside the glass
+    pointer = d > lim ? { x: C + ((p.x - C) / d) * lim, y: C + ((p.y - C) / d) * lim } : p;
     const a = Math.atan2(p.y - C, p.x - C);
     let da = a - lastAngle;
     if (da > Math.PI) da -= Math.PI * 2;
     if (da < -Math.PI) da += Math.PI * 2;
     lastAngle = a;
-    if (d > 30) vel = clamp(vel + da * 4.5, -11, 11);
+    if (d > 24) vel = clamp(vel + da * 4.5, -11, 11);
     kick();
   });
   const up = () => { pointer = null; lastAngle = null; kick(); };
   canvas.addEventListener('pointerup', up);
   canvas.addEventListener('pointercancel', up);
   canvas.addEventListener('keydown', (e) => {
-    if (['ArrowRight', 'ArrowDown'].includes(e.key)) vel = clamp(vel + 3.2, -14, 14);
-    else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) vel = clamp(vel - 3.2, -14, 14);
+    if (['ArrowRight', 'ArrowDown'].includes(e.key)) vel = clamp(vel + 3.2, -11, 11);
+    else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) vel = clamp(vel - 3.2, -11, 11);
     else if (e.key === 'Enter') auto = true;
     else return;
     e.preventDefault();
@@ -202,9 +194,8 @@ export function initStir() {
     soundBtn.textContent = `Sound: ${soundOn ? 'on' : 'off'}`;
     clink(false);
   });
-  again.addEventListener('click', () => { reset(); draw(0); canvas.focus({ preventScroll: true }); });
+  again.addEventListener('click', () => { reset(); kick(); canvas.focus({ preventScroll: true }); });
 
   reset();
-  draw(0);
-  whenVisible(canvas, (v) => { visible = v; if (v) { draw(mix()); kick(); } }, '10% 0px');
+  whenVisible(canvas, (v) => { visible = v; if (v) { loadFrames(); kick(); } }, '100% 0px');
 }

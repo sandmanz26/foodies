@@ -42,3 +42,31 @@ Bukan kafe yang menambah mocktail, dan bukan bar yang menambah kopi. Malam hari 
 - Keempat aturan adalah janji operasional. "Laptops close at six" dan jam buka sore adalah keputusan bisnis yang harus Anda setujui.
 - Asal biji per minuman masih ilustrasi; sesuaikan dengan pemasok nyata.
 - Nama RIUH belum dicek ketersediaan mereknya.
+
+## Website sebagai mesin penjualan
+Situs ini tidak menjual online; tugasnya mengubah pengunjung menjadi **orang yang datang berdua atau lebih**. Corongnya:
+
+| Tahap | Di situs | Ukuran |
+| --- | --- | --- |
+| Tertarik | Hero: "Dead quiet" → "No booze. All buzz." → "The noise." | Scroll melewati hero |
+| Paham | Adegan "two choices" lalu lima minuman | Sampai ke menu |
+| Terlibat | Mengaduk sendiri sampai RIUH menyala | `stir_completed` |
+| Jadi lead | Klaim voucher dengan nama | `voucher_claimed` |
+| Jadi tamu | "Book a table on WhatsApp" dengan kode voucher | `whatsapp_booking` |
+| Mengajak | "Invite a friend": tautan pribadi `?from=Nama` | `invite_shared`, `invite_opened` |
+
+**Yang sudah dipasang (tanpa backend):**
+- **WhatsApp sebagai penampung lead.** Tombol booking membuka chat ke nomor toko dengan nama, kode voucher, dan sumber kunjungan sudah terisi. Lead masuk ke inbox yang memang dipakai bisnis di Indonesia.
+- **Lingkar ajakan.** Voucher mensyaratkan membawa teman, dan tombol ajak membuat tautan yang menyapa teman itu dengan nama pengajak. Tiap klaim berpotensi mendatangkan pengunjung baru.
+- **Atribusi.** `utm_source` atau ajakan teman diingat selama sesi dan ikut terkirim di pesan WhatsApp, jadi Anda tahu kanal mana yang menghasilkan booking.
+- **Siap analitik.** Semua aksi kunci masuk ke `window.dataLayer`; tinggal pasang Google Tag Manager atau GA4.
+- **SEO lokal.** Data terstruktur (alamat, jam buka, jenis usaha) untuk hasil pencarian "coffee bar Jakarta".
+
+**Yang saya sarankan berikutnya (belum dikerjakan):**
+1. Google Business Profile dengan foto dan tautan ke situs: sumber utama pencarian "near me".
+2. Satu halaman per minuman untuk pencarian seperti "espresso tonic Jakarta".
+3. Konten pendek (Reels/TikTok) dari ritual bersulang, dengan tautan ber-`utm_source`.
+4. Backend kecil atau Google Sheet untuk mencatat klaim voucher, supaya kode bisa divalidasi dan lead bisa dihubungi ulang.
+5. Uji A/B judul hero dan isi voucher begitu ada trafik.
+
+**Batasnya:** tanpa backend, klaim voucher yang tidak diteruskan ke WhatsApp tidak tercatat di mana pun, dan nomor WhatsApp di `src/content.js` masih placeholder.

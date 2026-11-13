@@ -16,9 +16,10 @@ npm run preview  # melihat hasil build
 - `src/brand/` — logo dan maskot sebagai SVG yang dibuat dari kode.
 - `public/media/` — foto WebP, rangkaian frame hero, dan lima klip minuman.
 - `brand/` — strategi (`STRATEGY.md`), panduan brand, dan catatan generate.
-- `scripts/` — `build-logo`, `build-media`, `build-hero`, `build-drinks`. Tiga yang terakhir membaca berkas mentah di `assets-src/raw/` (tidak ikut di repo karena ukurannya).
+- `scripts/` — `build-logo`, `build-media`, `build-hero`, `build-drinks`, `build-stir`. Empat yang terakhir membaca berkas mentah di `assets-src/raw/` (tidak ikut di repo karena ukurannya).
 
 ## Catatan teknis
 - Hero memakai 191 frame WebP yang digerakkan scroll, dengan cross-fade antar frame; frame pertama adalah `<img>` biasa, sisanya dimuat setelah halaman selesai.
-- Tidak ada pustaka runtime: menu memakai video MP4 (sekitar 200 KB per klip), section stir memakai canvas 2D.
+- Tidak ada pustaka runtime: klip menu (MP4, 0,6–0,9 MB) digerakkan scroll; section stir memakai 81 frame WebP yang digerakkan gestur mengaduk.
+- `src/lib/growth.js` berisi pelacakan event (`dataLayer`), tautan WhatsApp, dan tautan ajakan `?from=`.
 - Voucher disimpan di `localStorage`. Kode voucher dibuat di browser dan **tidak divalidasi server**.

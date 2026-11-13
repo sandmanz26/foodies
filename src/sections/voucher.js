@@ -6,6 +6,7 @@ import { siRiuh, wordmark } from '../brand/shapes.js';
 import { WORDMARK_PATHS, WORDMARK_VIEWBOX } from '../brand/wordmark.js';
 import { getState, setState, onState } from '../lib/state.js';
 import { confetti } from '../lib/fx.js';
+import { track, whatsappLink, inviteLink } from '../lib/growth.js';
 
 const fmtDate = (ms) => new Date(ms).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -55,7 +56,11 @@ export function initVoucher() {
         <div class="ticket__stub"><span class="ticket__code">${voucher ? voucher.code : 'RIUH-?????'}</span></div>
         ${voucher ? '' : '<div class="ticket__lock">Tell us your name<br/>and the code appears.</div>'}
       </div>
-      ${voucher ? '<div class="ticket__actions"><button class="btn" type="button" data-save>Save as image</button></div>' : ''}`;
+      ${voucher ? `<div class="ticket__actions">
+        <a class="btn" href="${whatsappLink(`Hi RIUH! I'm ${voucher.name}. I'd like a table, and I have voucher ${voucher.code}.`)}" target="_blank" rel="noopener" data-track="whatsapp_booking">Book a table on WhatsApp</a>
+        <button class="btn btn--ghost" type="button" data-share>Invite a friend</button>
+        <button class="btn btn--ghost" type="button" data-save>Save as image</button>
+      </div>` : ''}`;
     form.hidden = !!voucher;
   });
 
@@ -70,12 +75,25 @@ export function initVoucher() {
     }
     error.hidden = true;
     setState({ voucher: { name, code: makeCode(), until: Date.now() + VOUCHER.validDays * 864e5 } });
+    track('voucher_claimed');
     const r = ticket.getBoundingClientRect();
     confetti(r.left + r.width / 2, r.top + r.height / 2, 140);
   });
 
   ticket.addEventListener('click', async (e) => {
+    const share = e.target.closest('[data-share]');
+    if (share) {
+      const url = inviteLink(getState().voucher.name);
+      const text = "I saved us a table at RIUH, a coffee cocktail bar with zero alcohol. First round's free if we go together.";
+      track('invite_shared');
+      try {
+        if (navigator.share) await navigator.share({ title: 'RIUH', text, url });
+        else { await navigator.clipboard.writeText(`${text} ${url}`); share.textContent = 'Link copied'; }
+      } catch { /* the visitor closed the share sheet */ }
+      return;
+    }
     if (!e.target.closest('[data-save]')) return;
+    track('voucher_saved');
     const { voucher, stirred } = getState();
     await document.fonts.ready;
     const W = 1200, H = 630;

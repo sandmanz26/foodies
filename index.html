@@ -13,6 +13,18 @@
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="preload" as="image" href="./media/hero/d/000.webp" media="(min-width: 761px)" fetchpriority="high" />
     <link rel="preload" as="image" href="./media/hero/m/000.webp" media="(max-width: 760px)" fetchpriority="high" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CafeOrCoffeeShop",
+        "name": "RIUH",
+        "description": "Zero-proof coffee cocktail bar in Jakarta: classic cocktails rebuilt on Indonesian coffee, no alcohol.",
+        "servesCuisine": ["Coffee", "Non-alcoholic cocktails", "Pastry"],
+        "address": { "@type": "PostalAddress", "streetAddress": "Jl. Meja Kosong No. 1", "addressLocality": "South Jakarta", "addressCountry": "ID" },
+        "openingHours": "Mo-Su 16:00-24:00",
+        "priceRange": "$$"
+      }
+    </script>
     <script type="module" src="/src/main.js"></script>
   </head>
   <body>
@@ -43,42 +55,63 @@
 
           <div class="hero__beats">
             <div class="beat is-on" data-beat="0">
-              <p class="beat__kicker">Tuesday, 9:47 pm. Nobody's here.</p>
-              <h1 class="beat__title">An empty<br />table.</h1>
-              <p class="beat__hint"><span class="beat__arrow" aria-hidden="true"></span>Scroll slowly. Let's fix this.</p>
+              <p class="beat__kicker">Tuesday, 9:47 pm.</p>
+              <h1 class="beat__title">Dead<br />quiet.</h1>
+              <p class="beat__hint"><span class="beat__arrow" aria-hidden="true"></span>Scroll. Let's fix that.</p>
             </div>
             <div class="beat" data-beat="1">
-              <p class="beat__kicker">First,</p>
-              <p class="beat__title">we set<br />it.</p>
-              <p class="beat__body">Coffee built like cocktails. Pastry still warm. Not a drop of alcohol.</p>
+              <p class="beat__kicker">We bring</p>
+              <p class="beat__title">No booze.<br />All buzz.</p>
+              <p class="beat__body">Coffee built like cocktails. Zero alcohol, nothing missing.</p>
             </div>
             <div class="beat" data-beat="2">
-              <p class="beat__kicker">Then</p>
-              <p class="beat__title">you make<br />it loud.</p>
-              <p class="beat__body">Bring your people. The glasses will do the rest.</p>
+              <p class="beat__kicker">You bring</p>
+              <p class="beat__title">The<br />noise.</p>
+              <p class="beat__body">Your people, your stories. The glasses do the rest.</p>
             </div>
           </div>
 
           <div class="hero__brand" data-brand aria-hidden="true">
             <div class="hero__brand-mark" data-wordmark></div>
             <p class="hero__brand-desc">Zero-proof coffee cocktail bar · Jakarta</p>
-            <p class="hero__brand-tag">Empty tables don't stay empty.</p>
+            <p class="hero__brand-tag">The good kind of loud.</p>
           </div>
+
+          <div class="hero__stamps" data-stamps aria-hidden="true"></div>
 
           <div class="hero__meter" aria-hidden="true"><span data-meter></span></div>
         </div>
       </section>
 
       <!-- 2. STORY -->
-      <section class="story" id="story">
-        <div class="wrap story__grid">
-          <div class="story__mascot" data-mascot="happy" aria-hidden="true"></div>
-          <div>
-            <p class="eyebrow">RIUH <span class="say">/ree-ooh/</span> Indonesian for the good kind of loud</p>
-            <h2 class="story__title">The night out, without the morning after.</h2>
-            <p class="story__text" data-reveal-words>
-              After dark, a city gives you two choices: a bar, or a cafe that wants its table back. We built the third one. A proper cocktail bar where the strongest thing in the glass is Indonesian coffee, so the whole table can stay, toast, and remember it tomorrow.
-            </p>
+      <section class="story" id="story" aria-labelledby="story-title">
+        <div class="scallop" aria-hidden="true"></div>
+        <div class="story__sticky">
+          <div class="story__night">
+            <p class="story__lead">After dark, a city gives you <em>two choices.</em></p>
+            <div class="story__choices">
+              <article class="choice choice--bar">
+                <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M10 12h44L32 36ZM32 36v18M20 56h24M18 20h28" /><circle cx="44" cy="10" r="5" /></svg>
+                <h3>A bar.</h3>
+                <p>Great night. Rough morning.</p>
+                <span class="choice__stamp" aria-hidden="true">Nope</span>
+              </article>
+              <article class="choice choice--cafe">
+                <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 24h32v14a14 14 0 0 1-14 14h-4a14 14 0 0 1-14-14ZM44 28h4a7 7 0 0 1 0 14h-4M22 8q-4 5 0 10M32 8q-4 5 0 10" /></svg>
+                <h3>A café.</h3>
+                <p>Nice latte. They want the table back by nine.</p>
+                <span class="choice__stamp" aria-hidden="true">Nah</span>
+              </article>
+            </div>
+          </div>
+          <div class="story__third">
+            <div class="story__third-inner">
+              <div class="story__mascot" data-mascot="happy" aria-hidden="true"></div>
+              <p class="eyebrow">So we built the third one</p>
+              <h2 class="story__title" id="story-title">The night out, without the morning after.</h2>
+              <p class="story__text">A proper cocktail bar where the strongest thing in the glass is Indonesian coffee. The whole table stays, toasts, and remembers it tomorrow.</p>
+              <p class="story__say">RIUH <span>/ree-ooh/</span> Indonesian for the good kind of loud</p>
+            </div>
           </div>
         </div>
         <div class="marquee" aria-hidden="true">
@@ -101,12 +134,8 @@
           <div class="menu__info" data-menu-info aria-live="polite"></div>
 
           <div class="menu__stage">
-            <div class="menu__arch" data-menu-arch>
-              <video class="menu__video" data-menu-video muted playsinline preload="none" disablepictureinpicture></video>
-              <button class="menu__replay" type="button" data-menu-replay aria-label="Watch it being built again">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.600-5.900M4 4v4.500h4.500" /></svg>
-              </button>
-            </div>
+            <div class="menu__arch" data-menu-arch></div>
+            <p class="menu__hint" aria-hidden="true">scroll to pour</p>
           </div>
 
           <div class="menu__side" data-menu-side></div>
@@ -130,7 +159,7 @@
           <div class="stir__copy">
             <p class="eyebrow">Your turn</p>
             <h2 id="stir-title" class="stir__title">Now stir. Make some noise.</h2>
-            <p class="stir__lead">Cold brew on one side, coconut milk on the other. A Kelapa Cloud isn't finished until someone stirs it. That someone is you.</p>
+            <p class="stir__lead">The cold brew just hit the coconut milk. A Kelapa Cloud isn't finished until someone stirs it, and tonight that someone is you.</p>
             <div class="stir__meter" role="progressbar" aria-label="How loud it is" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-stir-meter>
               <span>quiet</span>
               <div class="stir__letters" data-wordmark></div>
@@ -144,7 +173,7 @@
             </div>
           </div>
           <div class="stir__bench">
-            <canvas class="stir__canvas" data-stir-canvas width="720" height="720" tabindex="0" role="img" aria-label="A glass seen from above. Drag in circles, or use the arrow keys, to stir it. Press Enter to have it stirred for you."></canvas>
+            <canvas class="stir__canvas" data-stir-canvas width="720" height="720" tabindex="0" role="img" aria-label="A glass of cold brew and coconut milk seen from above, not yet mixed. Drag in circles, or use the arrow keys, to stir it. Press Enter to have it stirred for you."></canvas>
             <p class="stir__keys">Arrow keys stir. Enter stirs it for you.</p>
           </div>
         </div>
@@ -209,6 +238,7 @@
       </div>
     </footer>
 
+    <aside class="invite" data-invite hidden></aside>
     <canvas class="confetti" data-confetti aria-hidden="true"></canvas>
   </body>
 </html>

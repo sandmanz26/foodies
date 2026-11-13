@@ -2,6 +2,7 @@
 // paints immediately; the other frames stream in afterwards, coarse to fine.
 import manifest from '../hero-manifest.json';
 import { qs, qsa, clamp, smooth, stickyProgress, BASE } from '../lib/dom.js';
+import { burstPath } from '../brand/shapes.js';
 
 // scroll progress -> story
 const HOLD_EMPTY = 0.05; // "Meja kosong."
@@ -14,6 +15,11 @@ const BEATS = [
   [0.55, 0.84],
 ];
 const BRAND_AT = 0.88;
+// loud stickers that slam in at the two moments that carry the message
+const STAMPS = [
+  { text: ['0%', 'alcohol'], from: 0.27, to: 0.5, cls: 'stamp--zero' },
+  { text: ['Cheers!'], from: 0.77, to: 0.87, cls: 'stamp--cheers' },
+];
 const GLOOM_FROM = 0.06;
 const GLOOM_TO = 0.3;
 
@@ -26,6 +32,9 @@ export function initHero() {
   const brand = qs('[data-brand]', hero);
   const meter = qs('[data-meter]', hero);
   const mq = matchMedia('(max-width: 760px)');
+  const stampBox = qs('[data-stamps]', hero);
+  stampBox.innerHTML = STAMPS.map((s) => `<div class="stamp ${s.cls}"><svg viewBox="0 0 100 100"><path d="${burstPath(14, 48, 38)}"/></svg><p>${s.text.map((t) => `<span>${t}</span>`).join('')}</p></div>`).join('');
+  const stamps = [...stampBox.children];
 
   let set, total, n1, frames, shown = -1, current = 0, target = 0, raf = 0, inView = true;
 
@@ -125,6 +134,7 @@ export function initHero() {
     target = frameFor(p);
     beats.forEach((b, i) => b.classList.toggle('is-on', p > BEATS[i][0] && p <= BEATS[i][1]));
     brand.classList.toggle('is-on', p >= BRAND_AT);
+    stamps.forEach((el, i) => el.classList.toggle('is-on', p >= STAMPS[i].from && p < STAMPS[i].to));
     meter.style.setProperty('--p', p.toFixed(3));
     // the room starts grey and dim; colour comes back as the table fills
     stage.style.setProperty('--gloom', (1 - smooth(clamp((p - GLOOM_FROM) / (GLOOM_TO - GLOOM_FROM)))).toFixed(3));

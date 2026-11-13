@@ -437,8 +437,8 @@ button.chip:hover {
 .beat__title {
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(2.8rem, 5vw, 4.9rem);
-  line-height: 0.9;
+  font-size: clamp(3rem, 5.8vw, 5.8rem);
+  line-height: 0.86;
   letter-spacing: -0.01em;
   margin: 0.08em 0 0.18em;
   color: var(--tomat);
@@ -547,6 +547,66 @@ button.chip:hover {
     opacity: 1;
   }
 }
+.hero__stamps {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.stamp {
+  position: absolute;
+  width: clamp(130px, 17vw, 250px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: scale(2.6) rotate(-30deg);
+  transition: opacity 0.18s, transform 0.5s var(--ease-back);
+}
+.stamp.is-on {
+  opacity: 1;
+  transform: rotate(var(--tilt, 10deg));
+}
+.stamp svg {
+  position: absolute;
+  inset: 0;
+  fill: var(--fill, var(--tomat));
+  stroke: var(--ink);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  filter: drop-shadow(5px 6px 0 var(--ink));
+  overflow: visible;
+}
+.stamp p {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  font-family: var(--display);
+  line-height: 0.86;
+  color: var(--krim);
+  text-align: center;
+}
+.stamp--zero {
+  right: 9%;
+  top: 17%;
+}
+.stamp--zero span:first-child {
+  font-size: clamp(2.6rem, 6vw, 5.4rem);
+  color: var(--kunyit);
+}
+.stamp--zero span:last-child {
+  font-size: clamp(1rem, 2vw, 1.8rem);
+}
+.stamp--cheers {
+  --fill: var(--kunyit);
+  --tilt: -8deg;
+  left: 50%;
+  top: 8%;
+  margin-left: calc(clamp(130px, 17vw, 250px) / -2);
+}
+.stamp--cheers p {
+  color: var(--ink);
+  font-size: clamp(1.5rem, 3.2vw, 2.9rem);
+}
 .hero__meter {
   position: absolute;
   right: var(--gutter);
@@ -608,52 +668,192 @@ button.chip:hover {
   .hero__meter {
     display: none;
   }
+  .stamp--zero {
+    right: 4%;
+    top: calc(var(--top) - 34px);
+  }
+  .stamp--cheers {
+    top: calc(var(--top) - 30px);
+  }
 }
 
 /* ---------- 2. story ---------- */
+/* One pinned scene. --in, --stamp-a/b, --out, --flood and --say each run 0 -> 1 with scroll. */
 .story {
-  background: var(--tomat);
+  --in: 0;
+  --stamp-a: 0;
+  --stamp-b: 0;
+  --out: 0;
+  --flood: 0;
+  --say: 0;
+  height: 380vh;
+  background: var(--ink);
   color: var(--krim);
-  padding: clamp(40px, 8vw, 110px) 0 0;
   position: relative;
 }
-.story__grid {
+.story > .scallop {
+  --c: var(--tomat);
+}
+.story__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+}
+.story__night {
+  position: absolute;
+  inset: 0;
   display: grid;
-  grid-template-columns: minmax(120px, 0.34fr) 1fr;
-  gap: clamp(20px, 5vw, 80px);
-  align-items: start;
+  align-content: center;
+  justify-items: center;
+  gap: clamp(20px, 4vh, 48px);
+  padding: 90px var(--gutter) 40px;
+  opacity: calc(1 - var(--out));
+}
+.story__lead {
+  font-family: var(--display);
+  font-size: clamp(2rem, 5.4vw, 5rem);
+  line-height: 0.95;
+  text-align: center;
+  max-width: 16ch;
+  transform: translateY(calc(var(--out) * -60px));
+}
+.story__lead em {
+  font-style: normal;
+  color: var(--kunyit);
+}
+.story__choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 340px));
+  gap: clamp(14px, 3vw, 44px);
+  justify-content: center;
+  width: 100%;
+}
+.choice {
+  --dir: -1;
+  --stamp: var(--stamp-a);
+  position: relative;
+  background: var(--krim);
+  color: var(--ink);
+  border: var(--line);
+  border-radius: 28px;
+  box-shadow: 7px 7px 0 rgb(0 0 0 / 0.55);
+  padding: clamp(16px, 2.2vw, 30px);
+  /* flies in from its own side, then drops away once it has been ruled out */
+  transform: translate(calc((1 - var(--in)) * var(--dir) * 70vw), calc(var(--out) * 70vh)) rotate(calc((1 - var(--in)) * var(--dir) * 24deg + var(--dir) * 3deg + var(--out) * var(--dir) * 30deg));
+  filter: saturate(calc(1 - var(--stamp) * 0.7));
+}
+.choice--cafe {
+  --dir: 1;
+  --stamp: var(--stamp-b);
+}
+.choice svg {
+  width: clamp(40px, 5vw, 64px);
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.choice h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 3.6vw, 3.2rem);
+  line-height: 1;
+  margin: 0.2em 0 0.15em;
+}
+.choice p {
+  font-weight: 500;
+  font-size: clamp(0.95rem, 1.3vw, 1.2rem);
+  line-height: 1.3;
+}
+.choice__stamp {
+  position: absolute;
+  right: -10px;
+  top: 14px;
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 3vw, 2.8rem);
+  line-height: 1;
+  color: var(--tomat);
+  border: 5px solid var(--tomat);
+  border-radius: 14px;
+  padding: 0.1em 0.35em 0.15em;
+  background: rgb(255 244 224 / 0.9);
+  opacity: var(--stamp);
+  transform: rotate(14deg) scale(calc(3.2 - var(--stamp) * 2.2));
+}
+/* the third option floods the room with colour from the centre */
+.story__third {
+  position: absolute;
+  inset: 0;
+  background: var(--tomat);
+  clip-path: circle(calc(var(--flood) * 130vmax) at 50% 56%);
+  display: grid;
+  place-items: center;
+  padding: 90px var(--gutter) 40px;
+}
+.story__third-inner {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  max-width: 1000px;
 }
 .story__mascot {
-  position: sticky;
-  top: 22vh;
-  max-width: 300px;
+  justify-self: center;
+  width: clamp(90px, 12vw, 170px);
   --tomat: #ffc93c;
+  transform: scale(calc(0.2 + var(--flood) * 0.8)) rotate(calc((1 - var(--flood)) * -120deg));
+}
+.story__third .eyebrow {
+  transform: rotate(-2deg) translateY(calc((1 - var(--say)) * 30px));
+  opacity: var(--say);
+  margin-top: 0.6em;
 }
 .story__title {
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(2.6rem, 7vw, 6.5rem);
+  font-size: clamp(2.4rem, 6.6vw, 6.4rem);
   line-height: 0.92;
   color: var(--kunyit);
-  margin-bottom: 0.35em;
+  margin-bottom: 0.3em;
+  opacity: var(--say);
+  transform: translateY(calc((1 - var(--say)) * 60px)) scale(calc(0.9 + var(--say) * 0.1));
 }
 .story__text {
-  font-size: clamp(1.5rem, 3.3vw, 3.1rem);
+  font-size: clamp(1.1rem, 1.9vw, 1.7rem);
   font-weight: 600;
-  line-height: 1.16;
-  letter-spacing: -0.015em;
-  max-width: 22ch;
-  max-width: 24em;
+  line-height: 1.3;
+  max-width: 36ch;
+  opacity: calc(var(--say) * 2 - 1);
+  transform: translateY(calc((1 - var(--say)) * 80px));
 }
-.story__text .w {
-  opacity: 0.22;
-  transition: opacity 0.3s;
+.story__say {
+  font-family: var(--hand);
+  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+  margin-top: 1.2em;
+  opacity: calc(var(--say) * 3 - 2);
 }
-.story__text .w.is-lit {
-  opacity: 1;
+.story__say span {
+  opacity: 0.75;
+}
+.story .marquee {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  z-index: 3;
+}
+@media (max-width: 760px) {
+  .story__choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .choice {
+    border-radius: 20px;
+    box-shadow: 4px 4px 0 rgb(0 0 0 / 0.55);
+  }
 }
 .marquee {
-  margin-top: clamp(48px, 8vw, 110px);
   background: var(--kunyit);
   color: var(--ink);
   border-block: var(--line);
@@ -684,18 +884,6 @@ button.chip:hover {
   height: 0.7em;
   background: var(--tomat);
   clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-}
-@media (max-width: 760px) {
-  .story__grid {
-    grid-template-columns: 1fr;
-  }
-  .story {
-    padding-top: 96px;
-  }
-  .story__mascot {
-    position: static;
-    width: 120px;
-  }
 }
 
 /* ---------- 3. menu ---------- */
@@ -851,36 +1039,35 @@ button.chip:hover {
   transform: rotate(-1.5deg);
 }
 .menu__video {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  opacity: 0;
+  transition: opacity 0.35s;
 }
-.menu__replay {
+.menu__video.is-on {
+  opacity: 1;
+}
+.menu__hint {
   position: absolute;
-  right: 12px;
-  bottom: 12px;
-  width: 46px;
-  height: 46px;
-  display: grid;
-  place-items: center;
+  left: 50%;
+  bottom: -6px;
+  transform: translateX(-50%) rotate(-2deg);
   background: var(--putih);
+  color: var(--ink);
   border: var(--line);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: transform 0.4s var(--ease-back);
+  border-radius: 999px;
+  padding: 4px 16px;
+  font-family: var(--hand);
+  font-size: 1.15rem;
+  white-space: nowrap;
+  transition: opacity 0.3s, transform 0.4s var(--ease-back);
 }
-.menu__replay:hover {
-  transform: rotate(-90deg);
-}
-.menu__replay svg {
-  width: 22px;
-  height: 22px;
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 2.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.menu.is-poured .menu__hint {
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px) scale(0.8);
 }
 .menu__side {
   grid-column: 3;
@@ -1081,11 +1268,10 @@ button.chip:hover {
   width: min(100%, 560px);
   height: auto;
   aspect-ratio: 1;
-  background: var(--kunyit);
+  background: var(--kunyit) url('/media/stir/000.webp') center / cover;
   border: 3.5px solid var(--ink);
   border-radius: 50%;
   box-shadow: 10px 12px 0 var(--ink);
-  padding: 9%;
   touch-action: none;
   cursor: grab;
 }
@@ -1559,6 +1745,47 @@ button.chip:hover {
   opacity: 0.9;
 }
 
+.invite {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  z-index: 55;
+  transform: translateX(-50%) rotate(-1.5deg);
+  width: min(92vw, 520px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--kunyit);
+  color: var(--ink);
+  border: var(--line);
+  border-radius: 22px;
+  box-shadow: var(--pop);
+  padding: 12px 14px 12px 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  animation: info-in 0.6s var(--ease-back) both;
+}
+.invite p {
+  flex: 1;
+}
+.invite b {
+  font-family: var(--display);
+  font-weight: 400;
+}
+.invite .btn {
+  min-height: 42px;
+  font-size: 1rem;
+  padding: 0 16px;
+  white-space: nowrap;
+}
+.invite__x {
+  background: none;
+  border: 0;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px;
+}
 .confetti {
   position: fixed;
   inset: 0;

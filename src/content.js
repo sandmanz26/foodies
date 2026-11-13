@@ -14,6 +14,8 @@ export const STORE = {
   address: ['Jl. Meja Kosong No. 1', 'South Jakarta, Indonesia'],
   hours: 'Daily, 4 pm till late',
   instagram: '@riuh.bar',
+  // international format, digits only. Voucher and booking chats open with this number.
+  whatsapp: '6281200000000',
   mapsUrl: 'https://maps.google.com/?q=South+Jakarta',
 };
 
