@@ -33,9 +33,3 @@ export function stickyProgress(el) {
   const span = r.height - innerHeight;
   return span <= 0 ? 0 : clamp(-r.top / span);
 }
-
-export function mixHex(a, b, t) {
-  const pa = parseInt(a.slice(1), 16), pb = parseInt(b.slice(1), 16);
-  const ch = (s) => Math.round(lerp((pa >> s) & 255, (pb >> s) & 255, t));
-  return `#${((1 << 24) | (ch(16) << 16) | (ch(8) << 8) | ch(0)).toString(16).slice(1)}`;
-}

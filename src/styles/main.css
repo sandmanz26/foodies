@@ -115,9 +115,6 @@ input {
   width: min(1240px, 100% - var(--gutter) * 2);
   margin-inline: auto;
 }
-.eyebrow .say {
-  opacity: 0.75;
-}
 .eyebrow {
   font-family: var(--hand);
   font-size: clamp(1.15rem, 1rem + 0.6vw, 1.5rem);
@@ -316,9 +313,6 @@ button.chip:hover {
 }
 .nav > * {
   pointer-events: auto;
-}
-.nav.is-hidden {
-  transform: translateY(-140%);
 }
 .nav__logo {
   width: 104px;
@@ -1364,37 +1358,6 @@ button.chip:hover {
   transform: rotate(var(--tr, -3deg));
   z-index: 1;
 }
-.snap--yours {
-  background: var(--kunyit);
-  padding: 18px 16px 16px;
-  text-align: center;
-}
-.snap--yours .snap__label {
-  font-family: var(--hand);
-  font-size: 1.15rem;
-}
-.snap--yours .snap__name {
-  font-family: var(--display);
-  font-size: 1.7rem;
-  line-height: 0.95;
-  color: var(--tomat);
-  margin: 0.15em 0 0.3em;
-}
-.snap--yours .snap__meta {
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-.snap--yours .btn {
-  margin-top: 12px;
-  font-size: 1rem;
-  min-height: 42px;
-}
-.snap__swatch {
-  width: 62px;
-  height: 78px;
-  margin: 0 auto 8px;
-}
-
 @media (max-width: 600px) {
   .wall__board {
     columns: 2;
@@ -1416,42 +1379,31 @@ button.chip:hover {
     margin-left: -27px;
     top: -11px;
   }
-  .snap--yours {
-    padding: 14px 8px 12px;
-  }
-  .snap--yours .snap__name {
-    font-size: 1.25rem;
-  }
-  .snap--yours .btn {
-    font-size: 0.85rem;
-    padding: 0 12px;
-    min-height: 44px;
-  }
-}
+      }
 
-/* ---------- 6. promises ---------- */
-.janji {
+/* ---------- 6. house rules ---------- */
+.rules {
   background: var(--krim);
   padding-bottom: clamp(60px, 9vw, 130px);
   position: relative;
 }
-.janji > .wrap {
+.rules > .wrap {
   padding-top: clamp(70px, 10vw, 140px);
 }
-.janji__title {
+.rules__title {
   font-family: var(--display);
   font-weight: 400;
   font-size: clamp(2.6rem, 6.6vw, 6rem);
   line-height: 0.92;
   max-width: 12ch;
 }
-.janji__list {
+.rules__list {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(14px, 2vw, 28px);
   margin-top: clamp(30px, 5vw, 64px);
 }
-.janji__card {
+.rules__card {
   background: var(--c);
   color: var(--t, var(--krim));
   border: var(--line);
@@ -1464,39 +1416,39 @@ button.chip:hover {
   transform: rotate(var(--r));
   transition: transform 0.4s var(--ease-back);
 }
-.janji__card:hover {
+.rules__card:hover {
   transform: rotate(0) translateY(-8px);
 }
-.janji__face {
+.rules__face {
   width: 96px;
   margin-bottom: 4px;
 }
-.janji__card h3 {
+.rules__card h3 {
   font-family: var(--display);
   font-weight: 400;
   font-size: clamp(1.4rem, 1.9vw, 1.85rem);
   line-height: 1;
 }
-.janji__card p {
+.rules__card p {
   font-weight: 500;
   font-size: 1rem;
   line-height: 1.4;
 }
 @media (max-width: 1000px) {
-  .janji__list {
+  .rules__list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (max-width: 520px) {
-  .janji__list {
+  .rules__list {
     grid-template-columns: 1fr;
   }
-  .janji__card {
+  .rules__card {
     grid-template-columns: 72px 1fr;
     column-gap: 14px;
     align-items: start;
   }
-  .janji__face {
+  .rules__face {
     width: 72px;
     grid-row: span 2;
   }
@@ -1821,8 +1773,5 @@ button.chip:hover {
   [data-rise] {
     opacity: 1;
     transform: none;
-  }
-  .story__text .w {
-    opacity: 1;
   }
 }

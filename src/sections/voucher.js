@@ -18,11 +18,11 @@ function makeCode() {
   return `RIUH-${[...a].map((n) => abc[n % abc.length]).join('')}`;
 }
 
-export function initPromises() {
-  const TEXT_DARK = { jambu: 1 };
-  qs('[data-janji]').innerHTML = RULES.map(
-    (p, i) => `<li class="janji__card" data-rise style="--c:var(--${p.color});--r:${[-2, 1.5, -1, 2][i]}deg;--d:${i * 0.08}s;${TEXT_DARK[p.color] ? '--t:var(--ink);' : ''}">
-      <div class="janji__face">${siRiuh({ mood: p.mood, fill: 'var(--kunyit)', arms: false })}</div>
+export function initRules() {
+  const TEXT_DARK = { jambu: 1 }; // light card colours that need dark text
+  qs('[data-rules]').innerHTML = RULES.map(
+    (p, i) => `<li class="rules__card" data-rise style="--c:var(--${p.color});--r:${[-2, 1.5, -1, 2][i]}deg;--d:${i * 0.08}s;${TEXT_DARK[p.color] ? '--t:var(--ink);' : ''}">
+      <div class="rules__face">${siRiuh({ mood: p.mood, fill: 'var(--kunyit)', arms: false })}</div>
       <h3>${p.title}</h3><p>${p.body}</p></li>`,
   ).join('');
 }

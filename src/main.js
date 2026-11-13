@@ -6,7 +6,7 @@ import { initHero } from './sections/hero.js';
 import { initMenu } from './sections/menu.js';
 import { initStir } from './sections/stir.js';
 import { initWall } from './sections/wall.js';
-import { initPromises, initVoucher } from './sections/voucher.js';
+import { initRules, initVoucher } from './sections/voucher.js';
 import { initGrowth } from './lib/growth.js';
 
 qsa('[data-wordmark]').forEach((el) => { el.innerHTML = wordmark(); });
@@ -34,13 +34,13 @@ playStory();
 const track = qs('[data-marquee]');
 track.innerHTML += track.innerHTML;
 
-qsa('.stir__title, .stir__bench, .wall__title, .janji__title, .voucher__title, .ticket, .voucher__photo').forEach((el) => el.setAttribute('data-rise', ''));
+qsa('.stir__title, .stir__bench, .wall__title, .rules__title, .voucher__title, .ticket, .voucher__photo').forEach((el) => el.setAttribute('data-rise', ''));
 
 initHero();
 initMenu();
 initStir();
 initWall();
-initPromises();
+initRules();
 initVoucher();
 initRise();
 initGrowth();

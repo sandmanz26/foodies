@@ -1,4 +1,7 @@
 node_modules
 dist
 assets-src/raw
+.env
+.env.*
+!.env.example
 .DS_Store

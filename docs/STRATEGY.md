@@ -1,6 +1,6 @@
 # Strategi brand RIUH
 
-Ditulis dari sudut pandang head of marketing. Riset di bawah berasal dari tiga pencarian web singkat, bukan studi pasar penuh; angka-angkanya perlu diverifikasi sebelum dipakai di pitch.
+Ditulis dari sudut pandang head of marketing, atas permintaan pengguna (lihat `HISTORY.md`). Riset di bawah berasal dari tiga pencarian web singkat, bukan studi pasar penuh; angka-angkanya perlu diverifikasi sebelum dipakai di pitch.
 
 ## Apa yang ditemukan riset
 1. **Pasar kopi Indonesia sangat padat.** Per November 2025 ada lebih dari 461 ribu kedai kopi, terbanyak di dunia ([Seasia](https://seasia.co/2026/01/10/indonesia-tops-the-world-with-nearly-462-000-coffee-shops)). Jaringan besar seperti Janji Jiwa dan Kopi Kenangan masing-masing punya sekitar 1.000 gerai ([World Coffee Portal](https://www.worldcoffeeportal.com/news/fore-coffee-hits-its-stride-after-significant-ipo-year/)).

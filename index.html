@@ -3,28 +3,39 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>RIUH — Zero-proof coffee cocktail bar, Jakarta</title>
-    <meta name="description" content="Empty tables don't stay empty. RIUH is a zero-proof coffee cocktail bar from Jakarta: classic cocktails rebuilt on Indonesian coffee, no alcohol." />
+    <title>RIUH — Zero-proof coffee cocktail bar in Jakarta</title>
+    <meta name="description" content="Classic cocktails rebuilt on Indonesian coffee, with zero alcohol. RIUH is a coffee cocktail bar in South Jakarta: the night out, without the morning after." />
+    <link rel="canonical" href="%SITE_URL%/" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#F04E23" />
-    <meta property="og:title" content="RIUH — Zero-proof coffee cocktail bar, Jakarta" />
-    <meta property="og:description" content="Empty tables don't stay empty. Classic cocktails rebuilt on Indonesian coffee, no alcohol." />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="./media/og.jpg" />
+    <meta name="color-scheme" content="light" />
+    <meta name="format-detection" content="telephone=no" />
+
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="./favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./site.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="RIUH" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:title" content="RIUH — Zero-proof coffee cocktail bar in Jakarta" />
+    <meta property="og:description" content="Classic cocktails rebuilt on Indonesian coffee, with zero alcohol. The night out, without the morning after." />
+    <meta property="og:image" content="%SITE_URL%/media/og.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Four friends toasting with coffee cocktails around a yellow table on a red and cream checkered floor, seen from above, under the RIUH logo." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="RIUH — Zero-proof coffee cocktail bar in Jakarta" />
+    <meta name="twitter:description" content="Classic cocktails rebuilt on Indonesian coffee, with zero alcohol. The night out, without the morning after." />
+    <meta name="twitter:image" content="%SITE_URL%/media/og.jpg" />
+    <meta name="twitter:image:alt" content="Four friends toasting with coffee cocktails around a yellow table, seen from above, under the RIUH logo." />
+
     <link rel="preload" as="image" href="./media/hero/d/000.webp" media="(min-width: 761px)" fetchpriority="high" />
     <link rel="preload" as="image" href="./media/hero/m/000.webp" media="(max-width: 760px)" fetchpriority="high" />
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "CafeOrCoffeeShop",
-        "name": "RIUH",
-        "description": "Zero-proof coffee cocktail bar in Jakarta: classic cocktails rebuilt on Indonesian coffee, no alcohol.",
-        "servesCuisine": ["Coffee", "Non-alcoholic cocktails", "Pastry"],
-        "address": { "@type": "PostalAddress", "streetAddress": "Jl. Meja Kosong No. 1", "addressLocality": "South Jakarta", "addressCountry": "ID" },
-        "openingHours": "Mo-Su 16:00-24:00",
-        "priceRange": "$$"
-      }
-    </script>
+    <!-- %JSON_LD% -->
     <script type="module" src="/src/main.js"></script>
   </head>
   <body>
@@ -121,7 +132,7 @@
         </div>
       </section>
 
-      <!-- 3. MENU: five drinks composed in 3D -->
+      <!-- 3. MENU: five signature drinks, each poured by scroll -->
       <section class="menu" id="menu" aria-labelledby="menu-title">
         <div class="menu__sticky">
           <div class="menu__head">
@@ -190,13 +201,13 @@
         <div class="wall__board" data-wall></div>
       </section>
 
-      <!-- 6. PROMISES: why us -->
-      <section class="janji" id="janji" aria-labelledby="janji-title">
+      <!-- 6. HOUSE RULES: why RIUH -->
+      <section class="rules" id="rules" aria-labelledby="rules-title">
         <div class="scallop" style="--c: var(--pandan)" aria-hidden="true"></div>
         <div class="wrap">
           <p class="eyebrow">Why RIUH</p>
-          <h2 id="janji-title" class="janji__title">Four house rules.</h2>
-          <ul class="janji__list" data-janji></ul>
+          <h2 id="rules-title" class="rules__title">Four house rules.</h2>
+          <ul class="rules__list" data-rules></ul>
         </div>
       </section>
 

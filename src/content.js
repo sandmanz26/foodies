@@ -9,10 +9,17 @@ export const BRAND = {
   tagline: "Empty tables don't stay empty.",
 };
 
-// TODO(brand owner): replace with the real venue details before launch.
+// PLACEHOLDERS: every value in STORE is invented. Replace them all before the site goes live;
+// they also feed the structured data search engines read (see vite.config.js).
 export const STORE = {
   address: ['Jl. Meja Kosong No. 1', 'South Jakarta, Indonesia'],
+  street: 'Jl. Meja Kosong No. 1',
+  locality: 'South Jakarta',
+  region: 'DKI Jakarta',
+  postalCode: '12190',
+  country: 'ID',
   hours: 'Daily, 4 pm till late',
+  openingHours: 'Mo-Su 16:00-24:00', // schema.org format
   instagram: '@riuh.bar',
   // international format, digits only. Voucher and booking chats open with this number.
   whatsapp: '6281200000000',
